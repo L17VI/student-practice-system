@@ -1,43 +1,58 @@
-import React, { useState } from 'react'
-import LoginForm from '../components/LoginForm'
-import PracticeList from '../components/PracticeList'
+import { Box, Typography } from '@mui/material';
 
-export default function Home({ onLogin }) {
-  const [showLogin, setShowLogin] = useState(false)
-  const [showPractices, setShowPractices] = useState(false)
+export const Home = () => (
+    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        <Box sx={{
+            width: '845px',
+            height: '143px',
+            backgroundColor: '#5d6bc4', // Light blue color from header
+            borderRadius: '16px', // Same rounded corners
+            display: 'flex',
+            alignItems: 'flex-start',
+            position: 'relative',
+            overflow: 'hidden',
+        }}>
+            {/* Text Content */}
+            <Box sx={{
+                pt: '12px',
+                pl: '25px',
+                display: 'flex',
+                flexDirection: 'column',
+            }}>
+                <Box sx={{ width: '259px', height: '72px' }}>
+                    {/* Title split into two lines */}
+                    <Typography variant="h4" component="h1" sx={{ color: '#FFFFFF', fontWeight: 'bold', lineHeight: 1.2 }}>
+                        Наш сервис —
+                    </Typography>
+                    <Typography variant="h5" component="span" sx={{ color: '#FFFFFF', fontWeight: 'bold' }}>
+                        полигон для амбиций
+                    </Typography>
+                </Box>
+                <Box sx={{ width: '387px', height: '36px', mt: '2px' }}>
+                    <Typography variant="body1" sx={{ color: 'rgba(255, 255, 255, 0.8)' }}>
+                        Студенты погружаются в реальные проекты от настоящих компаний, а работодатели находят таланты
+                    </Typography>
+                </Box>
+            </Box>
 
-  return (
-    <div style={{ maxWidth: 900, margin: '40px auto', padding: 20 }}>
-      <header style={{ textAlign: 'center', marginBottom: 20 }}>
-        <h1>Платформа практик</h1>
-        <p style={{ color: '#555' }}>Добро пожаловать — найдите подходящую практику и подайте заявку.</p>
-      </header>
+            {/* Image Placeholder */}
+            <Box sx={{
+                position: 'absolute',
+                right: 0,
+                top: 0,
+                bottom: 0,
+                width: 'calc(845px - 259px - 25px)', // Calculate remaining space
+                backgroundColor: 'rgba(0, 0, 0, 0.1)', // Placeholder color
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+            }}>
+                <Typography sx={{ color: 'rgba(255,255,255,0.5)' }}>
+                    Фото
+                </Typography>
+            </Box>
+        </Box>
+    </Box>
+);
 
-      <div style={{ display: 'flex', gap: 12, justifyContent: 'center', marginBottom: 20 }}>
-        <button onClick={() => setShowLogin(s => !s)}>{showLogin ? 'Закрыть форму входа' : 'Войти'}</button>
-        <button onClick={() => setShowPractices(s => !s)}>{showPractices ? 'Скрыть практики' : 'Просмотреть практики'}</button>
-      </div>
-
-      <div>
-        {showLogin && (
-          <div style={{ maxWidth: 480, margin: '0 auto 20px' }}>
-            <h3>Вход</h3>
-            <LoginForm onLogin={onLogin} />
-          </div>
-        )}
-
-        {showPractices && (
-          <section>
-            <h3>Доступные практики</h3>
-            <PracticeList />
-          </section>
-        )}
-      </div>
-
-      <footer style={{ marginTop: 40, textAlign: 'center', color: '#888' }}>
-        <small>Тестовая версия — не для production</small>
-      </footer>
-    </div>
-  )
-}
-
+export default Home;

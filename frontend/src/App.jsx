@@ -4,8 +4,8 @@ import { Routes, Route } from 'react-router-dom';
 import { Box, Container, Typography } from '@mui/material';
 import Registration from './pages/Registration';
 import Login from './pages/Login';
+import Home from './pages/Home'; // Import from the correct file
 
-const HomePage = () => <Typography variant="h4" component="h1">Главная страница</Typography>;
 const VacanciesPage = () => <Typography variant="h4" component="h1">Вакансии</Typography>;
 
 function App() {
@@ -15,16 +15,20 @@ function App() {
         <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
             <Header isAuthenticated={isAuthenticated} />
 
-            {}
-            <Container component="main" sx={{ mt: 4, mb: 4, flexGrow: 1 }}>
-                <Routes>
-                    <Route path="/" element={<HomePage />} />
-                    <Route path="/vacancies" element={<VacanciesPage />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Registration />} />
-                    
-                </Routes>
-            </Container>
+            {/* The main content area */}
+            <Box component="main" sx={{ 
+                flexGrow: 1, 
+                pt: '126px', // Add padding top to offset the fixed header
+            }}>
+                <Container>
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/vacancies" element={<VacanciesPage />} />
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/register" element={<Registration />} />
+                    </Routes>
+                </Container>
+            </Box>
 
             <Footer />
         </Box>
