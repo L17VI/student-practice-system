@@ -5,43 +5,31 @@ import {
     InputBase,
     IconButton,
     Typography,
-    Tooltip,
     Container,
     Grid,
     useMediaQuery,
     useTheme,
+    Tooltip,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import MenuIcon from '@mui/icons-material/Menu';
-import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import TextsmsIcon from '@mui/icons-material/Textsms';
+import PersonIcon from '@mui/icons-material/Person';
 import { Link } from 'react-router-dom';
 
-// A reminder for the main layout: to prevent content from being hidden by the
-// fixed header, add a top padding to the main content container.
-// The header height is now dynamic.
-// e.g., <main style={{ paddingTop: '100px' }}>...</main>
-
-const tooltipTexts = {
-  menu: 'Открыть меню',
-  chat: 'Открыть чат',
-  profile: 'Личный кабинет',
-  search: 'Поиск',
-};
-
-// Helper for action icons (chat, profile)
-const renderActionIconButton = (key, icon, onClick) => (
-    <Tooltip title={tooltipTexts[key]} arrow>
+const renderActionIconButton = (key, title, icon, onClick) => (
+    <Tooltip title={title} arrow>
         <IconButton
-            aria-label={tooltipTexts[key]}
+            aria-label={key}
             onClick={onClick}
             sx={{
                 width: 40,
                 height: 40,
-                backgroundColor: '#5d6bc4', // Blue background
-                color: '#FFFFFF', // White icon
+                backgroundColor: '#5d6bc4',
+                color: '#FFFFFF',
+                transition: 'background-color 0.2s ease-in-out',
                 '&:hover, &:focus-visible': {
-                    opacity: 0.9,
+                    backgroundColor: '#4a56a1',
                 },
             }}
         >
@@ -49,7 +37,6 @@ const renderActionIconButton = (key, icon, onClick) => (
         </IconButton>
     </Tooltip>
 );
-
 
 export function Header({ onSearch, onMenuClick, onChatClick, onProfileClick }) {
     const [searchValue, setSearchValue] = useState('');
@@ -86,9 +73,8 @@ export function Header({ onSearch, onMenuClick, onChatClick, onProfileClick }) {
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 gap: { xs: 1, sm: 2 },
-                py: { xs: 2, md: 3 }, // Responsive padding
+                py: { xs: 2, md: 3 },
             }}>
-                {/* Left zone — logo placeholder */}
                 <Box
                     component={Link}
                     to="/"
@@ -99,14 +85,13 @@ export function Header({ onSearch, onMenuClick, onChatClick, onProfileClick }) {
                     }}
                 >
                     <Box sx={{
-                        width: isMobile ? '40px' : '110px', // Smaller logo on mobile
+                        width: isMobile ? '40px' : '110px',
                         height: '43px',
                         backgroundColor: '#5d6bc4',
                         borderRadius: '6px',
                     }} />
                 </Box>
 
-                {/* Center zone — search group */}
                 {!isMobile && (
                     <Box
                         sx={{
@@ -148,16 +133,19 @@ export function Header({ onSearch, onMenuClick, onChatClick, onProfileClick }) {
                                 borderRadius: '9999px',
                             }}
                         />
-                        <IconButton aria-label={tooltipTexts.menu} onClick={onMenuClick} sx={{ width: 40, height: 40, color: '#FFFFFF' }}>
-                            <MenuIcon sx={{ width: 24, height: 24 }} />
-                        </IconButton>
-                        <IconButton aria-label={tooltipTexts.search} onClick={handleSearchClick} sx={{ width: 40, height: 40, color: '#FFFFFF' }}>
-                            <SearchIcon sx={{ width: 24, height: 24 }} />
-                        </IconButton>
+                        <Tooltip title="Меню" arrow>
+                            <IconButton aria-label="Меню" onClick={onMenuClick} sx={{ width: 40, height: 40, color: '#FFFFFF' }}>
+                                <MenuIcon sx={{ width: 24, height: 24 }} />
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Поиск" arrow>
+                            <IconButton aria-label="Поиск" onClick={handleSearchClick} sx={{ width: 40, height: 40, color: '#FFFFFF' }}>
+                                <SearchIcon sx={{ width: 24, height: 24 }} />
+                            </IconButton>
+                        </Tooltip>
                     </Box>
                 )}
 
-                {/* Right zone — action icons */}
                 <Box sx={{
                     display: 'flex',
                     alignItems: 'center',
@@ -165,12 +153,14 @@ export function Header({ onSearch, onMenuClick, onChatClick, onProfileClick }) {
                     flexShrink: 0,
                 }}>
                     {isMobile && (
-                         <IconButton aria-label={tooltipTexts.search} onClick={handleSearchClick} sx={{ width: 40, height: 40, color: '#1F2340' }}>
-                            <SearchIcon sx={{ width: 24, height: 24 }} />
-                        </IconButton>
+                        <Tooltip title="Поиск" arrow>
+                             <IconButton aria-label="Поиск" onClick={handleSearchClick} sx={{ width: 40, height: 40, color: '#1F2340' }}>
+                                <SearchIcon sx={{ width: 24, height: 24 }} />
+                            </IconButton>
+                        </Tooltip>
                     )}
-                    {renderActionIconButton('chat', <ChatBubbleOutlineIcon sx={{ width: 24, height: 24 }} />, onChatClick)}
-                    {renderActionIconButton('profile', <AccountCircleIcon sx={{ width: 24, height: 24 }} />, onProfileClick)}
+                    {renderActionIconButton('Уведомления', 'Уведомления', <TextsmsIcon sx={{ width: 24, height: 24 }} />, onChatClick)}
+                    {renderActionIconButton('Личный кабинет', 'Личный кабинет', <PersonIcon sx={{ width: 36, height: 36 }} />, onProfileClick)}
                 </Box>
             </Container>
         </AppBar>
@@ -206,17 +196,15 @@ export function Footer() {
                 backgroundColor: '#2a3264',
                 color: '#FFFFFF',
                 width: '100%',
-                py: { xs: 4, md: 6 }, // Responsive padding
+                py: { xs: 4, md: 6 },
             }}
         >
             <Container maxWidth="lg">
                 <Grid container spacing={{ xs: 4, md: 2 }} justifyContent="space-between">
-                    {/* Logo */}
                     <Grid item xs={12} sm={4} md={3}>
                         <Box sx={{ width: '114.25px', height: '47px', backgroundColor: '#5d6bc4', borderRadius: '6px' }} />
                     </Grid>
 
-                    {/* Columns */}
                     <Grid item xs={6} sm={4} md={2.5}>
                         <FooterColumn
                             title="Отрасли профессий"
