@@ -5,7 +5,6 @@ import {
     InputBase,
     IconButton,
     Typography,
-    Container,
     Grid,
     useMediaQuery,
     useTheme,
@@ -59,20 +58,21 @@ export function Header({ onSearch, onMenuClick, onChatClick, onProfileClick }) {
     return (
         <AppBar
             component="header"
-            position="fixed"
+            position="static" // Changed from "fixed"
             elevation={0}
             sx={{
                 backgroundColor: '#FFFFFF',
                 color: '#1F2340',
                 boxShadow: '0 2px 6px rgba(0,0,0,0.06)',
-                zIndex: 50,
+                zIndex: 1, // Lower z-index as it's not overlaying anymore
             }}
         >
-            <Container maxWidth="lg" sx={{
+            <Box sx={{
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 gap: { xs: 1, sm: 2 },
+                px: { xs: 2, md: 4 }, // Use padding from the parent in App.jsx
                 py: { xs: 2, md: 3 },
             }}>
                 <Box
@@ -162,7 +162,7 @@ export function Header({ onSearch, onMenuClick, onChatClick, onProfileClick }) {
                     {renderActionIconButton('Уведомления', 'Уведомления', <TextsmsIcon sx={{ width: 24, height: 24 }} />, onChatClick)}
                     {renderActionIconButton('Личный кабинет', 'Личный кабинет', <PersonIcon sx={{ width: 36, height: 36 }} />, onProfileClick)}
                 </Box>
-            </Container>
+            </Box>
         </AppBar>
     );
 }
@@ -197,34 +197,33 @@ export function Footer() {
                 color: '#FFFFFF',
                 width: '100%',
                 py: { xs: 4, md: 6 },
+                px: { xs: 2, md: 4 }, // Use padding from the parent in App.jsx
             }}
         >
-            <Container maxWidth="lg">
-                <Grid container spacing={{ xs: 4, md: 2 }} justifyContent="space-between">
-                    <Grid item xs={12} sm={4} md={3}>
-                        <Box sx={{ width: '114.25px', height: '47px', backgroundColor: '#5d6bc4', borderRadius: '6px' }} />
-                    </Grid>
-
-                    <Grid item xs={6} sm={4} md={2.5}>
-                        <FooterColumn
-                            title="Отрасли профессий"
-                            items={['Классические', 'Современные', 'Творческие']}
-                        />
-                    </Grid>
-                    <Grid item xs={6} sm={4} md={2.5}>
-                        <FooterColumn
-                            title="Связь с нами"
-                            items={['Чат с нами', 'Почта', 'Социальные сети']}
-                        />
-                    </Grid>
-                    <Grid item xs={6} sm={4} md={2.5}>
-                        <FooterColumn
-                            title="Личные данные"
-                            items={['Аккаунт']}
-                        />
-                    </Grid>
+            <Grid container spacing={{ xs: 4, md: 2 }} justifyContent="space-between">
+                <Grid item xs={12} sm={4} md={3}>
+                    <Box sx={{ width: '114.25px', height: '47px', backgroundColor: '#5d6bc4', borderRadius: '6px' }} />
                 </Grid>
-            </Container>
+
+                <Grid item xs={6} sm={4} md={2.5}>
+                    <FooterColumn
+                        title="Отрасли профессий"
+                        items={['Классические', 'Современные', 'Творческие']}
+                    />
+                </Grid>
+                <Grid item xs={6} sm={4} md={2.5}>
+                    <FooterColumn
+                        title="Связь с нами"
+                        items={['Чат с нами', 'Почта', 'Социальные сети']}
+                    />
+                </Grid>
+                <Grid item xs={6} sm={4} md={2.5}>
+                    <FooterColumn
+                        title="Личные данные"
+                        items={['Аккаунт']}
+                    />
+                </Grid>
+            </Grid>
         </Box>
     );
 }

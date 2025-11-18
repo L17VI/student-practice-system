@@ -2,86 +2,85 @@ import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
   typography: {
-    fontFamily: 'Inter, sans-serif',
+    fontFamily: 'Inter, sans-serif', // Reverted to Inter
     h1: {
       fontWeight: 700,
-      fontSize: '2.5rem', // ~40px
+      fontSize: '2.5rem',
       lineHeight: 1.2,
     },
     h2: {
       fontWeight: 700,
-      fontSize: '2rem', // ~32px
+      fontSize: '2rem',
       lineHeight: 1.2,
     },
     h3: {
       fontWeight: 600,
-      fontSize: '1.75rem', // ~28px
+      fontSize: '1.75rem',
       lineHeight: 1.3,
     },
     h4: {
       fontWeight: 600,
-      fontSize: '1.5rem', // ~24px
+      fontSize: '1.5rem',
       lineHeight: 1.3,
     },
     h5: {
       fontWeight: 600,
-      fontSize: '1.25rem', // ~20px
+      fontSize: '1.25rem',
       lineHeight: 1.4,
     },
     h6: {
       fontWeight: 600,
-      fontSize: '1.1rem', // ~18px
+      fontSize: '1.1rem',
       lineHeight: 1.4,
     },
     subtitle1: {
       fontWeight: 500,
-      fontSize: '1rem', // ~16px
+      fontSize: '1rem',
       lineHeight: 1.5,
     },
     subtitle2: {
       fontWeight: 500,
-      fontSize: '0.875rem', // ~14px
+      fontSize: '0.875rem',
       lineHeight: 1.5,
     },
     body1: {
       fontWeight: 400,
-      fontSize: '1rem', // ~16px
+      fontSize: '1rem',
       lineHeight: 1.6,
     },
     body2: {
       fontWeight: 400,
-      fontSize: '0.875rem', // ~14px
+      fontSize: '0.875rem',
       lineHeight: 1.6,
     },
     button: {
       fontWeight: 600,
-      fontSize: '0.9375rem', // ~15px
+      fontSize: '0.9375rem',
       lineHeight: 1.75,
-      textTransform: 'none', // Keep buttons from being all caps by default
+      textTransform: 'none',
     },
     caption: {
       fontWeight: 400,
-      fontSize: '0.75rem', // ~12px
+      fontSize: '0.75rem',
       lineHeight: 1.66,
     },
     overline: {
       fontWeight: 500,
-      fontSize: '0.75rem', // ~12px
+      fontSize: '0.75rem',
       lineHeight: 2.66,
       textTransform: 'uppercase',
     },
   },
-  // You can also define palette, spacing, etc. here
   palette: {
     primary: {
-      main: '#5d6bc4', // Using your blue color as primary
+      main: '#5d6bc4',
     },
     secondary: {
-      main: '#1F2340', // Using your dark text color as secondary
+      main: '#1F2340',
     },
     background: {
-      default: '#F6F7FB', // Light background
-      paper: '#FFFFFF', // White paper background
+      default: '#F6F7FB',
+      paper: '#FFFFFF',
     },
   },
   components: {
@@ -101,7 +100,6 @@ const theme = createTheme({
         },
       },
     },
-    // You can add more component overrides here if needed
   },
 });
 
