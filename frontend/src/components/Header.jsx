@@ -7,6 +7,9 @@ import {
     Typography,
     Tooltip,
     Container,
+    Grid,
+    useMediaQuery,
+    useTheme,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -16,8 +19,8 @@ import { Link } from 'react-router-dom';
 
 // A reminder for the main layout: to prevent content from being hidden by the
 // fixed header, add a top padding to the main content container.
-// The header height is now dynamic, but around 126px.
-// e.g., <main style={{ paddingTop: '126px' }}>...</main>
+// The header height is now dynamic.
+// e.g., <main style={{ paddingTop: '100px' }}>...</main>
 
 const tooltipTexts = {
   menu: 'Открыть меню',
@@ -51,6 +54,8 @@ const renderActionIconButton = (key, icon, onClick) => (
 export function Header({ onSearch, onMenuClick, onChatClick, onProfileClick }) {
     const [searchValue, setSearchValue] = useState('');
     const [isSearchFocused, setIsSearchFocused] = useState(false);
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
     const handleSearchKeyDown = (event) => {
         if (event.key === 'Enter' && onSearch) {
@@ -76,16 +81,12 @@ export function Header({ onSearch, onMenuClick, onChatClick, onProfileClick }) {
                 zIndex: 50,
             }}
         >
-            <Box sx={{
-                maxWidth: '1280px',
-                mx: 'auto',
-                px: '24px',
-                width: '100%',
+            <Container maxWidth="lg" sx={{
                 display: 'flex',
-                alignItems: 'center', // Vertically center content
+                alignItems: 'center',
                 justifyContent: 'space-between',
                 gap: { xs: 1, sm: 2 },
-                py: '40px', // 40px padding top and bottom
+                py: { xs: 2, md: 3 }, // Responsive padding
             }}>
                 {/* Left zone — logo placeholder */}
                 <Box
@@ -95,127 +96,105 @@ export function Header({ onSearch, onMenuClick, onChatClick, onProfileClick }) {
                         display: 'flex',
                         alignItems: 'center',
                         flexShrink: 0,
-                        height: '43px', // Match placeholder height
                     }}
                 >
                     <Box sx={{
-                        width: '110px',
+                        width: isMobile ? '40px' : '110px', // Smaller logo on mobile
                         height: '43px',
                         backgroundColor: '#5d6bc4',
-                        borderRadius: '6px', // Optional: for a softer look
+                        borderRadius: '6px',
                     }} />
                 </Box>
 
                 {/* Center zone — search group */}
-                <Box
-                    sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        flexShrink: 1,
-                        height: '46px',
-                        maxWidth: '567px',
-                        width: '100%',
-                        borderRadius: '9999px',
-                        backgroundColor: '#5d6bc4',
-                        border: '1px solid transparent',
-                        transition: 'box-shadow 200ms ease, border-color 200ms ease',
-                        ...(isSearchFocused && {
-                            borderColor: '#5862D6',
-                            boxShadow: '0 0 0 3px rgba(88, 98, 214, 0.3)',
-                        }),
-                        pl: '9px',
-                        pr: '4px',
-                    }}
-                >
-                    {/* White InputBase inside the blue block */}
-                    <InputBase
-                        fullWidth
-                        placeholder="Поиск…"
-                        aria-label="Search"
-                        value={searchValue}
-                        onChange={(e) => setSearchValue(e.target.value)}
-                        onKeyDown={handleSearchKeyDown}
-                        onFocus={() => setIsSearchFocused(true)}
-                        onBlur={() => setIsSearchFocused(false)}
+                {!isMobile && (
+                    <Box
                         sx={{
-                            height: '29px',
-                            width: '464px',
+                            display: 'flex',
+                            alignItems: 'center',
                             flexShrink: 1,
-                            mr: '8px', // Gap between input and buttons
-                            pl: '20px',
-                            fontSize: '14px',
-                            color: '#1F2340',
-                            backgroundColor: '#FFFFFF',
+                            height: '46px',
+                            maxWidth: '567px',
+                            width: '100%',
                             borderRadius: '9999px',
-                            '& .MuiInputBase-input::placeholder': {
-                                color: '#59607A',
-                                opacity: 1,
-                            },
-                        }}
-                    />
-                    
-                    <IconButton
-                        aria-label={tooltipTexts.menu}
-                        onClick={onMenuClick}
-                        sx={{
-                            width: 40,
-                            height: 40,
-                            color: '#FFFFFF',
-                            '&:hover, &:focus-visible': { backgroundColor: 'rgba(255, 255, 255, 0.1)' },
+                            backgroundColor: '#5d6bc4',
+                            border: '1px solid transparent',
+                            transition: 'box-shadow 200ms ease, border-color 200ms ease',
+                            ...(isSearchFocused && {
+                                borderColor: '#5862D6',
+                                boxShadow: '0 0 0 3px rgba(88, 98, 214, 0.3)',
+                            }),
+                            pl: '9px',
+                            pr: '4px',
                         }}
                     >
-                        <MenuIcon sx={{ width: 24, height: 24 }} />
-                    </IconButton>
-
-                    <IconButton
-                        aria-label={tooltipTexts.search}
-                        onClick={handleSearchClick}
-                        sx={{
-                            width: 40,
-                            height: 40,
-                            color: '#FFFFFF',
-                            '&:hover, &:focus-visible': { backgroundColor: 'rgba(255, 255, 255, 0.1)' },
-                        }}
-                    >
-                        <SearchIcon sx={{ width: 24, height: 24 }} />
-                    </IconButton>
-                </Box>
+                        <InputBase
+                            fullWidth
+                            placeholder="Поиск…"
+                            aria-label="Search"
+                            value={searchValue}
+                            onChange={(e) => setSearchValue(e.target.value)}
+                            onKeyDown={handleSearchKeyDown}
+                            onFocus={() => setIsSearchFocused(true)}
+                            onBlur={() => setIsSearchFocused(false)}
+                            sx={{
+                                height: '29px',
+                                width: '100%',
+                                mr: '8px',
+                                pl: '20px',
+                                fontSize: '14px',
+                                color: '#1F2340',
+                                backgroundColor: '#FFFFFF',
+                                borderRadius: '9999px',
+                            }}
+                        />
+                        <IconButton aria-label={tooltipTexts.menu} onClick={onMenuClick} sx={{ width: 40, height: 40, color: '#FFFFFF' }}>
+                            <MenuIcon sx={{ width: 24, height: 24 }} />
+                        </IconButton>
+                        <IconButton aria-label={tooltipTexts.search} onClick={handleSearchClick} sx={{ width: 40, height: 40, color: '#FFFFFF' }}>
+                            <SearchIcon sx={{ width: 24, height: 24 }} />
+                        </IconButton>
+                    </Box>
+                )}
 
                 {/* Right zone — action icons */}
                 <Box sx={{
                     display: 'flex',
                     alignItems: 'center',
-                    gap: { xs: 0, sm: '12px' },
+                    gap: { xs: 1, sm: 1.5 },
                     flexShrink: 0,
-                    height: '46px',
                 }}>
+                    {isMobile && (
+                         <IconButton aria-label={tooltipTexts.search} onClick={handleSearchClick} sx={{ width: 40, height: 40, color: '#1F2340' }}>
+                            <SearchIcon sx={{ width: 24, height: 24 }} />
+                        </IconButton>
+                    )}
                     {renderActionIconButton('chat', <ChatBubbleOutlineIcon sx={{ width: 24, height: 24 }} />, onChatClick)}
                     {renderActionIconButton('profile', <AccountCircleIcon sx={{ width: 24, height: 24 }} />, onProfileClick)}
                 </Box>
-            </Box>
+            </Container>
         </AppBar>
     );
 }
 
-const FooterColumn = ({ title, items, sx }) => (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, ...sx }}>
-        <Typography variant="subtitle1" sx={{ 
-            fontWeight: 'bold',
-            fontSize: '18px',
-            whiteSpace: 'nowrap',
-        }}>
+const FooterColumn = ({ title, items }) => (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <Typography variant="h6" sx={{ fontWeight: 'bold', whiteSpace: 'nowrap' }}>
             {title}
         </Typography>
-        {items.map((item, index) => (
-            <Typography key={index} variant="body2" component={Link} to="#" sx={{ 
-                textDecoration: 'none', 
-                color: 'inherit',
-                fontSize: '14px',
-                whiteSpace: 'nowrap',
-            }}>
-                {item}
-            </Typography>
-        ))}
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+            {items.map((item, index) => (
+                <Typography key={index} variant="body2" component={Link} to="#" sx={{ 
+                    textDecoration: 'none', 
+                    color: 'inherit',
+                    whiteSpace: 'nowrap',
+                    opacity: 0.8,
+                    '&:hover': { opacity: 1 }
+                }}>
+                    {item}
+                </Typography>
+            ))}
+        </Box>
     </Box>
 );
 
@@ -224,69 +203,40 @@ export function Footer() {
         <Box
             component="footer"
             sx={{
-                height: '265px',
-                backgroundColor: '#2a3264', // This Box provides the full-width background
+                backgroundColor: '#2a3264',
                 color: '#FFFFFF',
-                mt: 'auto',
                 width: '100%',
+                py: { xs: 4, md: 6 }, // Responsive padding
             }}
         >
-            {/* This inner Box centers the content */}
-            <Box sx={{
-                maxWidth: '1280px',
-                height: '100%',
-                position: 'relative',
-                mx: 'auto', // Center the container
-                px: '24px', // Add padding to align with header content
-            }}>
-                {/* Logo Placeholder */}
-                <Box
-                    sx={{
-                        position: 'absolute',
-                        top: '46px',
-                        left: '63px',
-                        width: '114.25px',
-                        height: '47px',
-                        backgroundColor: '#5d6bc4',
-                        borderRadius: '6px',
-                    }}
-                />
+            <Container maxWidth="lg">
+                <Grid container spacing={{ xs: 4, md: 2 }} justifyContent="space-between">
+                    {/* Logo */}
+                    <Grid item xs={12} sm={4} md={3}>
+                        <Box sx={{ width: '114.25px', height: '47px', backgroundColor: '#5d6bc4', borderRadius: '6px' }} />
+                    </Grid>
 
-                {/* Columns */}
-                <FooterColumn
-                    title="Отрасли профессий"
-                    items={['Классические и фундаментальные', 'Современные и цифровые', 'Творческие и социальные']}
-                    sx={{
-                        position: 'absolute',
-                        top: '40px',
-                        left: '333px',
-                        width: '156px',
-                        height: '103px',
-                    }}
-                />
-                <FooterColumn
-                    title="Связь с нами"
-                    items={['Чат с нами', 'Почта', 'Социальные сети']}
-                    sx={{
-                        position: 'absolute',
-                        top: '40px',
-                        left: '649px',
-                        width: '108px',
-                        height: '103px',
-                    }}
-                />
-                <FooterColumn
-                    title="Личные данные"
-                    items={['Аккаунт']}
-                    sx={{
-                        position: 'absolute',
-                        top: '40px',
-                        left: '917px',
-                        width: '127px',
-                        height: '55px',
-                    }}
-                />
-            </Box>
+                    {/* Columns */}
+                    <Grid item xs={6} sm={4} md={2.5}>
+                        <FooterColumn
+                            title="Отрасли профессий"
+                            items={['Классические', 'Современные', 'Творческие']}
+                        />
+                    </Grid>
+                    <Grid item xs={6} sm={4} md={2.5}>
+                        <FooterColumn
+                            title="Связь с нами"
+                            items={['Чат с нами', 'Почта', 'Социальные сети']}
+                        />
+                    </Grid>
+                    <Grid item xs={6} sm={4} md={2.5}>
+                        <FooterColumn
+                            title="Личные данные"
+                            items={['Аккаунт']}
+                        />
+                    </Grid>
+                </Grid>
+            </Container>
         </Box>
     );
 }

@@ -1,58 +1,48 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Grid, useTheme, useMediaQuery } from '@mui/material';
 
-export const Home = () => (
-    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-        <Box sx={{
-            width: '845px',
-            height: '143px',
-            backgroundColor: '#5d6bc4', // Light blue color from header
-            borderRadius: '16px', // Same rounded corners
+export const Home = () => {
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
+    return (
+        <Box sx={{ 
+            backgroundColor: '#5d6bc4',
+            borderRadius: '16px',
             display: 'flex',
-            alignItems: 'flex-start',
-            position: 'relative',
             overflow: 'hidden',
+            flexDirection: { xs: 'column', md: 'row' }, // Stack on mobile, row on desktop
         }}>
-            {/* Text Content */}
-            <Box sx={{
-                pt: '12px',
-                pl: '25px',
-                display: 'flex',
-                flexDirection: 'column',
-            }}>
-                <Box sx={{ width: '259px', height: '72px' }}>
-                    {/* Title split into two lines */}
-                    <Typography variant="h4" component="h1" sx={{ color: '#FFFFFF', fontWeight: 'bold', lineHeight: 1.2 }}>
-                        Наш сервис —
+            <Grid container>
+                {/* Text Content */}
+                <Grid item xs={12} md={7} sx={{ p: { xs: 3, md: 4 } }}>
+                    <Box>
+                        <Typography variant={isMobile ? "h5" : "h4"} component="h1" sx={{ color: '#FFFFFF', fontWeight: 'bold', lineHeight: 1.2 }}>
+                            Наш сервис —
+                        </Typography>
+                        <Typography variant={isMobile ? "h6" : "h5"} component="span" sx={{ color: '#FFFFFF', fontWeight: 'bold' }}>
+                            полигон для амбиций
+                        </Typography>
+                    </Box>
+                    <Typography variant="body1" sx={{ color: 'rgba(255, 255, 255, 0.8)', mt: 2 }}>
+                        Студенты погружаются в реальные проекты от настоящих компаний, а работодатели находят таланты.
                     </Typography>
-                    <Typography variant="h5" component="span" sx={{ color: '#FFFFFF', fontWeight: 'bold' }}>
-                        полигон для амбиций
-                    </Typography>
-                </Box>
-                <Box sx={{ width: '387px', height: '36px', mt: '2px' }}>
-                    <Typography variant="body1" sx={{ color: 'rgba(255, 255, 255, 0.8)' }}>
-                        Студенты погружаются в реальные проекты от настоящих компаний, а работодатели находят таланты
-                    </Typography>
-                </Box>
-            </Box>
+                </Grid>
 
-            {/* Image Placeholder */}
-            <Box sx={{
-                position: 'absolute',
-                right: 0,
-                top: 0,
-                bottom: 0,
-                width: 'calc(845px - 259px - 25px)', // Calculate remaining space
-                backgroundColor: 'rgba(0, 0, 0, 0.1)', // Placeholder color
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-            }}>
-                <Typography sx={{ color: 'rgba(255,255,255,0.5)' }}>
-                    Фото
-                </Typography>
-            </Box>
+                {/* Image Placeholder */}
+                <Grid item xs={12} md={5} sx={{ 
+                    minHeight: '200px',
+                    background: 'rgba(0, 0, 0, 0.1)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}>
+                    <Typography sx={{ color: 'rgba(255,255,255,0.5)' }}>
+                        Фото
+                    </Typography>
+                </Grid>
+            </Grid>
         </Box>
-    </Box>
-);
+    );
+};
 
 export default Home;
