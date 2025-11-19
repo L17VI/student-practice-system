@@ -8,7 +8,7 @@ class Student(Base):
     id = Column(Integer, primary_key=True, index=True)
     MyPracticeId = Column(Integer, ForeignKey("practices.id"))
     GroupId = Column(Integer, ForeignKey("groups.id"))
-    UserId = Column(Integer, ForeignKey("users.id"))
+    UserId = Column(Integer, ForeignKey("user.id"))
 
     user = relationship("User", back_populates="student")
     group = relationship("Group", back_populates="students")
