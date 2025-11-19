@@ -1,39 +1,21 @@
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.orm import declarative_base
-import os
-from config import settings
+from sqlalchemy.orm import sessionmaker, declarative_base
 
-Base = declarative_base()
+DATABASE_URL = "sqlite:///./instance/data.db"
 
-# Создаем папку instance если её нет
-os.makedirs("instance", exist_ok=True)
-
-# Выбираем параметры подключения в зависимости от типа БД
-DATABASE_URL = settings.DATABASE_URL
-# Если это SQLite — нужно передать check_same_thread
-if DATABASE_URL.startswith("sqlite"):
-    engine = create_engine(
-        DATABASE_URL,
-        connect_args={"check_same_thread": False}
-    )
-else:
-    # Для других драйверов (postgresql и т.д.) не передаём connect_args
-    engine = create_engine(DATABASE_URL)
+engine = create_engine(
+    DATABASE_URL, connect_args={"check_same_thread": False}
+)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
+Base = declarative_base()
+
+
 def get_db():
+    """Dependency для FastAPI: предоставляет сессию SQLAlchemy и гарантированно закрывает её."""
     db = SessionLocal()
     try:
         yield db
     finally:
         db.close()
-
-def create_tables():
-    """Создает все таблицы при запуске"""
-    Base.metadata.create_all(bind=engine)
-
-# Совместимость: alias
-def init_db():
-    create_tables()
