@@ -5,6 +5,7 @@ import { Box, Typography } from '@mui/material';
 import Registration from './pages/Registration';
 import Login from './pages/Login';
 import Home from './pages/Home';
+import PartnersCarousel from './components/PartnersCarousel';
 
 const VacanciesPage = () => <Typography variant="h4" component="h1">Вакансии</Typography>;
 
@@ -16,12 +17,12 @@ function App() {
             display: 'flex', 
             flexDirection: 'column', 
             minHeight: '100vh',
-            bgcolor: 'background.default',
+            bgcolor: 'background.paper', // Changed to white to match the content area
             alignItems: 'center',
         }}>
             <Box sx={{
                 width: '100%',
-                maxWidth: { xs: '100%', md: '954px' }, // Optimized for mobile
+                maxWidth: 'lg',
                 bgcolor: 'background.paper',
                 display: 'flex',
                 flexDirection: 'column',
@@ -38,8 +39,12 @@ function App() {
                         <Route path="/" element={<Home />} />
                         <Route path="/vacancies" element={<VacanciesPage />} />
                         <Route path="/login" element={<Login />} />
-                        <Route path="/register" element="/register" />
+                        <Route path="/register" element={<Registration />} />
                     </Routes>
+                </Box>
+                
+                <Box sx={{ width: '100%', mb: 4 }}>
+                    <PartnersCarousel />
                 </Box>
 
                 <Footer />
