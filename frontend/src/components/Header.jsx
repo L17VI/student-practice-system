@@ -1,63 +1,229 @@
-import { AppBar, Toolbar, Typography, Button, Box, Container } from '@mui/material';
+import { useState } from 'react';
+import {
+    AppBar,
+    Box,
+    InputBase,
+    IconButton,
+    Typography,
+    Grid,
+    useMediaQuery,
+    useTheme,
+    Tooltip,
+} from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
+import MenuIcon from '@mui/icons-material/Menu';
+import TextsmsIcon from '@mui/icons-material/Textsms';
+import PersonIcon from '@mui/icons-material/Person';
 import { Link } from 'react-router-dom';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
-export function Header({ isAuthenticated }) {
+const renderActionIconButton = (key, title, icon, onClick) => (
+    <Tooltip title={title} arrow>
+        <IconButton
+            aria-label={key}
+            onClick={onClick}
+            sx={{
+                width: 40,
+                height: 40,
+                backgroundColor: '#5d6bc4',
+                color: '#FFFFFF',
+                transition: 'background-color 0.2s ease-in-out',
+                '&:hover, &:focus-visible': {
+                    backgroundColor: '#4a56a1',
+                },
+            }}
+        >
+            {icon}
+        </IconButton>
+    </Tooltip>
+);
+
+export function Header({ onSearch, onMenuClick, onChatClick, onProfileClick }) {
+    const [searchValue, setSearchValue] = useState('');
+    const [isSearchFocused, setIsSearchFocused] = useState(false);
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
+    const handleSearchKeyDown = (event) => {
+        if (event.key === 'Enter' && onSearch) {
+            onSearch(searchValue);
+        }
+    };
+    
+    const handleSearchClick = () => {
+        if (onSearch) {
+            onSearch(searchValue);
+        }
+    }
+
     return (
-        <AppBar position="static">
-            <Toolbar>
-                {/* Заголовок/Логотип слева */}
-                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                    <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-                        Платформа Стажировок
-                    </Link>
-                </Typography>
-                {/* Навигационные ссылки справа */}
-                <Box>
-                    <Button color="inherit" component={Link} to="/">
-                        Главная
-                    </Button>
-                    <Button color="inherit" component={Link} to="/vacancies">
-                        Вакансии
-                    </Button>
-                    {isAuthenticated ? (
-                        <Button color="inherit" component={Link} to="/profile" startIcon={<AccountCircleIcon />}>
-                            Профиль
-                        </Button>
-                    ) : (
-                        <>
-                            <Button color="inherit" component={Link} to="/login">
-                                Вход
-                            </Button>
-                            <Button color="inherit" component={Link} to="/register">
-                                Регистрация
-                            </Button>
-                        </>
-                    )}
+        <AppBar
+            component="header"
+            position="static" // Changed from "fixed"
+            elevation={0}
+            sx={{
+                backgroundColor: '#FFFFFF',
+                color: '#1F2340',
+                boxShadow: '0 2px 6px rgba(0,0,0,0.06)',
+                zIndex: 1, // Lower z-index as it's not overlaying anymore
+            }}
+        >
+            <Box sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: { xs: 1, sm: 2 },
+                px: { xs: 2, md: 4 }, // Use padding from the parent in App.jsx
+                py: { xs: 2, md: 3 },
+            }}>
+                <Box
+                    component={Link}
+                    to="/"
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        flexShrink: 0,
+                    }}
+                >
+                    <Box sx={{
+                        width: isMobile ? '40px' : '110px',
+                        height: '43px',
+                        backgroundColor: '#5d6bc4',
+                        borderRadius: '6px',
+                    }} />
                 </Box>
-            </Toolbar>
+
+                {!isMobile && (
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            flexShrink: 1,
+                            height: '46px',
+                            maxWidth: '567px',
+                            width: '100%',
+                            borderRadius: '9999px',
+                            backgroundColor: '#5d6bc4',
+                            border: '1px solid transparent',
+                            transition: 'box-shadow 200ms ease, border-color 200ms ease',
+                            ...(isSearchFocused && {
+                                borderColor: '#5862D6',
+                                boxShadow: '0 0 0 3px rgba(88, 98, 214, 0.3)',
+                            }),
+                            pl: '9px',
+                            pr: '4px',
+                        }}
+                    >
+                        <InputBase
+                            fullWidth
+                            placeholder="Поиск…"
+                            aria-label="Search"
+                            value={searchValue}
+                            onChange={(e) => setSearchValue(e.target.value)}
+                            onKeyDown={handleSearchKeyDown}
+                            onFocus={() => setIsSearchFocused(true)}
+                            onBlur={() => setIsSearchFocused(false)}
+                            sx={{
+                                height: '29px',
+                                width: '100%',
+                                mr: '8px',
+                                pl: '20px',
+                                fontSize: '14px',
+                                color: '#1F2340',
+                                backgroundColor: '#FFFFFF',
+                                borderRadius: '9999px',
+                            }}
+                        />
+                        <Tooltip title="Меню" arrow>
+                            <IconButton aria-label="Меню" onClick={onMenuClick} sx={{ width: 40, height: 40, color: '#FFFFFF' }}>
+                                <MenuIcon sx={{ width: 24, height: 24 }} />
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Поиск" arrow>
+                            <IconButton aria-label="Поиск" onClick={handleSearchClick} sx={{ width: 40, height: 40, color: '#FFFFFF' }}>
+                                <SearchIcon sx={{ width: 24, height: 24 }} />
+                            </IconButton>
+                        </Tooltip>
+                    </Box>
+                )}
+
+                <Box sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: { xs: 1, sm: 1.5 },
+                    flexShrink: 0,
+                }}>
+                    {isMobile && (
+                        <Tooltip title="Поиск" arrow>
+                             <IconButton aria-label="Поиск" onClick={handleSearchClick} sx={{ width: 40, height: 40, color: '#1F2340' }}>
+                                <SearchIcon sx={{ width: 24, height: 24 }} />
+                            </IconButton>
+                        </Tooltip>
+                    )}
+                    {renderActionIconButton('Уведомления', 'Уведомления', <TextsmsIcon sx={{ width: 24, height: 24 }} />, onChatClick)}
+                    {renderActionIconButton('Личный кабинет', 'Личный кабинет', <PersonIcon sx={{ width: 36, height: 36 }} />, onProfileClick)}
+                </Box>
+            </Box>
         </AppBar>
     );
 }
+
+const FooterColumn = ({ title, items }) => (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <Typography variant="h6" sx={{ fontWeight: 'bold', whiteSpace: 'nowrap' }}>
+            {title}
+        </Typography>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+            {items.map((item, index) => (
+                <Typography key={index} variant="body2" component={Link} to="#" sx={{ 
+                    textDecoration: 'none', 
+                    color: 'inherit',
+                    whiteSpace: 'nowrap',
+                    opacity: 0.8,
+                    '&:hover': { opacity: 1 }
+                }}>
+                    {item}
+                </Typography>
+            ))}
+        </Box>
+    </Box>
+);
 
 export function Footer() {
     return (
         <Box
             component="footer"
             sx={{
-                py: 3,
-                px: 2,
-                mt: 'auto',
-                backgroundColor: (theme) =>
-                    theme.palette.mode === 'light' ? theme.palette.grey[200] : theme.palette.grey[800],
+                backgroundColor: '#2a3264',
+                color: '#FFFFFF',
+                width: '100%',
+                py: { xs: 4, md: 6 },
+                px: { xs: 2, md: 4 }, // Use padding from the parent in App.jsx
             }}
         >
-            <Container maxWidth="lg">
-                <Typography variant="body2" color="text.secondary" align="center">
-                    {'© '}
-                    Платформа Стажировок {new Date().getFullYear()}
-                </Typography>
-            </Container>
+            <Grid container spacing={{ xs: 4, md: 2 }} justifyContent="space-between">
+                <Grid item xs={12} sm={4} md={3}>
+                    <Box sx={{ width: '114.25px', height: '47px', backgroundColor: '#5d6bc4', borderRadius: '6px' }} />
+                </Grid>
+
+                <Grid item xs={6} sm={4} md={2.5}>
+                    <FooterColumn
+                        title="Отрасли профессий"
+                        items={['Классические', 'Современные', 'Творческие']}
+                    />
+                </Grid>
+                <Grid item xs={6} sm={4} md={2.5}>
+                    <FooterColumn
+                        title="Связь с нами"
+                        items={['Чат с нами', 'Почта', 'Социальные сети']}
+                    />
+                </Grid>
+                <Grid item xs={6} sm={4} md={2.5}>
+                    <FooterColumn
+                        title="Личные данные"
+                        items={['Аккаунт']}
+                    />
+                </Grid>
+            </Grid>
         </Box>
     );
 }
