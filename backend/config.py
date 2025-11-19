@@ -1,11 +1,15 @@
-import os
-from pathlib import Path
-from pydantic_settings import BaseSettings
+from database import Base, engine
 
-class Settings(BaseSettings):
-    DATABASE_URL: str = f"sqlite:///{Path('instance/internship.db').resolve()}"
+from models import (
+    user,
+    group,
+    practice,
+    student,
+    document,
+    favorite,
+    group_practice,
+    practice_supervisor
+)
 
-    class Config:
-        env_file = ".env"
-
-settings = Settings()
+def init_db():
+    Base.metadata.create_all(bind=engine)
