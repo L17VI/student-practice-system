@@ -11,10 +11,11 @@ class UserRole(str, Enum):
 
 class UserBase(BaseModel):
     email: EmailStr
-    name: str
+    fullname: str
     role: UserRole
     direction: Optional[str] = None
     phone: Optional[str] = None
+
 
 class UserCreate(UserBase):
     pass
