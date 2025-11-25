@@ -2,7 +2,6 @@ import axios from 'axios'
 
 const client = axios.create({ baseURL: '/api' })
 
-// Простая mock-логика для локальной разработки: хранит user в localStorage
 function saveUser(user) {
   localStorage.setItem('currentUser', JSON.stringify(user))
 }
@@ -12,9 +11,7 @@ function loadUser() {
 }
 
 export default {
-  // Mock login: accepts username and optional role override
-  async login({ username, password, role }) {
-    // In real app replace with POST /auth/token or similar
+  async login({ username, role }) {
     const userRole = role || (username === 'admin' ? 'admin' : username === 'student' ? 'student' : 'supervisor')
     const user = { id: 1, username, role: userRole }
     saveUser(user)
@@ -29,7 +26,6 @@ export default {
     return loadUser()
   },
 
-  // Practices
   async fetchPractices() {
     try {
       const res = await client.get('/practices/')
@@ -40,7 +36,6 @@ export default {
     }
   },
 
-  // Applications
   async createApplication(payload) {
     try {
       const res = await client.post('/applications/', payload)
@@ -61,4 +56,3 @@ export default {
     }
   }
 }
-

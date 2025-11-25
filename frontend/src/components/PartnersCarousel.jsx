@@ -5,7 +5,7 @@ const PartnerLogo = ({ id, itemWidth }) => (
     <Box sx={{
         height: '60px',
         width: `${itemWidth}px`,
-        minWidth: `${itemWidth}px`, // Prevent shrinking in flex container
+        minWidth: `${itemWidth}px`,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -18,16 +18,13 @@ const PartnerLogo = ({ id, itemWidth }) => (
 
 const PartnersCarousel = () => {
     const partners = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-    const duplicatedPartners = [...partners, ...partners]; // Duplicate for seamless loop
+    const duplicatedPartners = [...partners, ...partners];
 
-    const itemWidth = 120; // Define a clear width for each logo
-    const gap = 32; // Define a clear gap between logos
+    const itemWidth = 120;
+    const gap = 32;
 
-    // The total distance the animation needs to travel
-    // This is the width of the original set of partners including their gaps
     const scrollDistance = partners.length * (itemWidth + gap);
 
-    // The total width of the container holding the duplicated logos
     const containerWidth = duplicatedPartners.length * (itemWidth + gap);
 
     const scrollAnimation = {

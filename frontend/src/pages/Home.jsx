@@ -1,5 +1,5 @@
 import { Box, Typography, Stack, Grid, useTheme, useMediaQuery, Button } from '@mui/material';
-import PartnersCarousel from '../components/PartnersCarousel';
+import { Link } from 'react-router-dom';
 
 const HeroSection = () => {
     const theme = useTheme();
@@ -101,21 +101,11 @@ const ProfessionsSection = () => (
 
 export const Home = () => {
     return (
-        <Stack spacing="24px" alignItems="center">
+        <Stack spacing={4} alignItems="center">
             <HeroSection />
             <TopCompaniesSection />
-            <Box sx={{ 
-                width: '100%', 
-                mt: '18px !important',
-                border: '1px solid #5d6bc4',
-                borderRadius: '16px',
-                overflow: 'hidden', // To contain the carousel
-            }}>
-                <PartnersCarousel />
-            </Box>
-            <Box sx={{ width: '100%', mt: '182px !important' }}>
-                <ProfessionsSection />
-            </Box>
+            <ProfessionsSection />
+            <Link to="/practice">Go to Practice Page</Link>
         </Stack>
     );
 };
