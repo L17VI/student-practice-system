@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from api import user, auth, practice, applications, rop, supervisors
+from api import user, auth, practice, applications, rop, supervisors, favorite
 from config import init_db
 from sqlalchemy import inspect
 from database import engine
@@ -23,13 +23,12 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 
 app.include_router(auth.router, prefix="/auth", tags=["auth"])
-app.include_router(user.router, prefix="/user", tags=["user"])
+app.include_router(user.router, prefix="/user", tags=["Пользователи"])
 app.include_router(practice.router, prefix="/practice", tags=["Практики"])
 app.include_router(applications.router, prefix="/applications", tags=["applications"])
 app.include_router(rop.router, prefix="/rop", tags=["rop"])
 app.include_router(supervisors.router, prefix="/supervisors", tags=["supervisors"])
-
-
+app.include_router(favorite.router, prefix="/favorite", tags=["Избранное"])
 @app.get("/")
 async def root():
     return {"message": "Hello World"}

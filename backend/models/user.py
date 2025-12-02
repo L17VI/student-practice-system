@@ -6,10 +6,11 @@ class UserModel(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
-    fullName = Column(String)
+    fullname = Column(String)
     email = Column(String, unique=True)
     image = Column(String)
     role = Column(String)
+    password = Column(String)
 
     student = relationship("StudentModel", back_populates="user")
     supervisor = relationship("PracticeSupervisorModel", back_populates="user")

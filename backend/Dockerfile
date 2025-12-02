@@ -1,11 +1,11 @@
 # Use a small, stable Python base image
-FROM python:3.11-slim
+FROM python:3.13-slim
 
 # Prevent Python from writing pyc files and buffer stdout/stderr
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-WORKDIR /app
+WORKDIR /
 
 # Install system dependencies (add more if your project requires them)
 RUN apt-get update \
