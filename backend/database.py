@@ -1,7 +1,13 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
+from pathlib import Path
 
-DATABASE_URL = "sqlite:///./instance/data.db"
+# Путь к файлу БД — внутри папки backend/instance
+BASE_DIR = Path(__file__).parent
+INSTANCE_DIR = BASE_DIR / "instance"
+INSTANCE_DIR.mkdir(parents=True, exist_ok=True)
+DB_PATH = INSTANCE_DIR / "data.db"
+DATABASE_URL = f"sqlite:///{DB_PATH}"
 
 engine = create_engine(
     DATABASE_URL, connect_args={"check_same_thread": False}

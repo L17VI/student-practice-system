@@ -1,5 +1,4 @@
-from pydantic import BaseModel, EmailStr
-from datetime import datetime
+from pydantic import BaseModel, Field
 from typing import Optional
 from enum import Enum
 
@@ -9,28 +8,16 @@ class UserRole(str, Enum):
     PS = "ps" #practice-supervisor руководитель практики
     ADMIN = "admin"
 
-class UserBase(BaseModel):
-    email: EmailStr
-    name: str
-    role: UserRole
-    direction: Optional[str] = None
-    phone: Optional[str] = None
+class UserAddSchema(BaseModel):
+    email: str = Field(example='ivanov.ii@dvfu.ru')
+    fullname: str = Field(example='Иванов Иван Иванович')
+    role: UserRole = Field(example='student, rop, ps, admin')
+    image: Optional[str] = Field(default=None, example='https://example.com/image.jpg')
+    password: str = Field(example='securepassword123')
 
-class UserCreate(UserBase):
-    pass
-
-class UserResponse(UserBase):
-    id: int
-    is_active: bool
-    created_at: datetime
-
-    # Pydantic v2 configuration to allow building from ORM objects
     model_config = {"from_attributes": True}
 
-class LoginRequest(BaseModel):
-    email: EmailStr
 
-class Token(BaseModel):
-    access_token: str
-    token_type: str
-    user: UserResponse
+class UserSchema(UserAddSchema):
+    id: int
+
