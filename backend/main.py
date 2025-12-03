@@ -10,7 +10,6 @@ from contextlib import asynccontextmanager
 # проверяем, есть ли ключевая таблица, например 'user'
 KEY_TABLE = "user"
 
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     inspector = inspect(engine)
