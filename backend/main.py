@@ -3,6 +3,7 @@ from api import user, auth, practice, applications, rop, supervisors, favorite
 from config import init_db
 from sqlalchemy import inspect
 from database import engine
+import uvicorn
 
 import os
 from contextlib import asynccontextmanager
@@ -33,8 +34,6 @@ async def root():
     return {"message": "Hello World"}
 
 if __name__ == "__main__":
-    import uvicorn
-
     inspector = inspect(engine)
     if KEY_TABLE not in inspector.get_table_names():
         init_db()

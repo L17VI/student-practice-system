@@ -1,54 +1,48 @@
 import React, { useState } from 'react';
 import { Header, Footer } from './components/Header';
 import { Routes, Route } from 'react-router-dom';
-import { Box, Typography } from '@mui/material';
+import { Box, Container, Typography } from '@mui/material';
 import Registration from './pages/Registration';
 import Login from './pages/Login';
 import Home from './pages/Home';
+import PracticePage from './pages/PracticePage';
+import AccountPage from './pages/AccountPage';
 import PartnersCarousel from './components/PartnersCarousel';
 
 const VacanciesPage = () => <Typography variant="h4" component="h1">Вакансии</Typography>;
 
 function App() {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [isAuthenticated] = useState(false);
 
     return (
         <Box sx={{ 
             display: 'flex', 
             flexDirection: 'column', 
             minHeight: '100vh',
-            bgcolor: 'background.paper', // Changed to white to match the content area
-            alignItems: 'center',
+            bgcolor: 'background.paper',
         }}>
-            <Box sx={{
-                width: '100%',
+            <Header isAuthenticated={isAuthenticated} />
+
+            <Container component="main" sx={{ 
                 maxWidth: 'lg',
-                bgcolor: 'background.paper',
-                display: 'flex',
-                flexDirection: 'column',
                 flexGrow: 1,
+                py: 4,
             }}>
-                <Header isAuthenticated={isAuthenticated} />
-
-                <Box component="main" sx={{ 
-                    flexGrow: 1,
-                    px: { xs: 2, md: 4 },
-                    py: 4,
-                }}>
-                    <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/vacancies" element={<VacanciesPage />} />
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/register" element={<Registration />} />
-                    </Routes>
-                </Box>
-                
-                <Box sx={{ width: '100%', mb: 4 }}>
-                    <PartnersCarousel />
-                </Box>
-
-                <Footer />
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/practice" element={<PracticePage />} />
+                    <Route path="/account" element={<AccountPage />} />
+                    <Route path="/vacancies" element={<VacanciesPage />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Registration />} />
+                </Routes>
+            </Container>
+            
+            <Box sx={{ width: '100%', my: 4 }}>
+                <PartnersCarousel />
             </Box>
+
+            <Footer />
         </Box>
     );
 }
