@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Typography, Stack, Paper, Grid, IconButton } from '@mui/material';
 import Slider from 'react-slick';
-import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
+import userService from '../services/userService';
 
 const DataRow = ({ label, value }) => (
     <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
@@ -22,7 +23,7 @@ const DataRow = ({ label, value }) => (
 
 const FavoritePracticeCard = () => (
     <Box sx={{ p: 1 }}>
-        <Paper 
+        <Paper
             sx={{
                 width: '197px',
                 height: '157px',
@@ -38,12 +39,12 @@ const FavoritePracticeCard = () => (
 const NextArrow = (props) => {
     const { onClick } = props;
     return (
-        <IconButton 
-            onClick={onClick} 
-            sx={{ 
-                position: 'absolute', 
-                right: 10, 
-                top: '50%', 
+        <IconButton
+            onClick={onClick}
+            sx={{
+                position: 'absolute',
+                right: 10,
+                top: '50%',
                 transform: 'translateY(-50%)',
                 bgcolor: 'white',
                 '&:hover': { bgcolor: 'white' }
@@ -57,12 +58,12 @@ const NextArrow = (props) => {
 const PrevArrow = (props) => {
     const { onClick } = props;
     return (
-        <IconButton 
-            onClick={onClick} 
-            sx={{ 
-                position: 'absolute', 
-                left: 10, 
-                top: '50%', 
+        <IconButton
+            onClick={onClick}
+            sx={{
+                position: 'absolute',
+                left: 10,
+                top: '50%',
                 transform: 'translateY(-50%)',
                 zIndex: 1,
                 bgcolor: 'white',
@@ -75,12 +76,24 @@ const PrevArrow = (props) => {
 }
 
 const AccountPage = () => {
-    const userData = {
-        fullName: '',
-        login: '',
+    const [userData, setUserData] = useState({
+        fullname: '',
         email: '',
         group: '',
-    };
+    });
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const user = await userService.getCurrentUser();
+                setUserData(user);
+            } catch (error) {
+                console.error('Failed to fetch user data', error);
+            }
+        };
+
+        fetchUserData();
+    }, []);
 
     const sliderSettings = {
         dots: false,
@@ -113,8 +126,8 @@ const AccountPage = () => {
             <Typography variant="h4" component="h1" sx={{ fontWeight: '700' }}>
                 Личный кабинет
             </Typography>
-            
-            <Paper 
+
+            <Paper
                 variant="outlined"
                 sx={{
                     width: '100%',
@@ -126,11 +139,10 @@ const AccountPage = () => {
             >
                 <Stack spacing={4}>
                     <Typography variant="h5" component="p" sx={{ fontWeight: 'bold' }}>
-                        {userData.fullName}
+                        {userData.fullname}
                     </Typography>
-                    
+
                     <Stack spacing={2}>
-                        <DataRow label="Логин:" value={userData.login} />
                         <DataRow label="Электронная почта:" value={userData.email} />
                         <DataRow label="Группа обучения:" value={userData.group} />
                     </Stack>

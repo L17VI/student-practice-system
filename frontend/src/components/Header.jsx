@@ -10,11 +10,13 @@ import {
     useMediaQuery,
     useTheme,
     Tooltip,
+    Button,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import MenuIcon from '@mui/icons-material/Menu';
 import TextsmsIcon from '@mui/icons-material/Textsms';
 import PersonIcon from '@mui/icons-material/Person';
+import LogoutIcon from '@mui/icons-material/Logout';
 import { Link } from 'react-router-dom';
 
 const ActionIconButton = ({ to, title, icon, onClick }) => (
@@ -40,7 +42,7 @@ const ActionIconButton = ({ to, title, icon, onClick }) => (
     </Tooltip>
 );
 
-export function Header({ onSearch, onMenuClick, onChatClick, onProfileClick }) {
+export function Header({ isAuthenticated, onLogout, onSearch, onMenuClick, onChatClick }) {
     const [searchValue, setSearchValue] = useState('');
     const [isSearchFocused, setIsSearchFocused] = useState(false);
     const theme = useTheme();
@@ -161,7 +163,27 @@ export function Header({ onSearch, onMenuClick, onChatClick, onProfileClick }) {
                         </Tooltip>
                     )}
                     <ActionIconButton title="Уведомления" icon={<TextsmsIcon sx={{ width: 24, height: 24 }} />} onClick={onChatClick} />
-                    <ActionIconButton to="/account" title="Личный кабинет" icon={<PersonIcon sx={{ width: 36, height: 36 }} />} onClick={onProfileClick} />
+                    
+                    {isAuthenticated ? (
+                        <>
+                            <ActionIconButton to="/account" title="Личный кабинет" icon={<PersonIcon sx={{ width: 28, height: 28 }} />} />
+                            <ActionIconButton onClick={onLogout} title="Выйти" icon={<LogoutIcon sx={{ width: 24, height: 24 }} />} />
+                        </>
+                    ) : (
+                        <Button
+                            component={Link}
+                            to="/login"
+                            variant="contained"
+                            sx={{
+                                backgroundColor: '#5d6bc4',
+                                '&:hover': { backgroundColor: '#4a56a1' },
+                                borderRadius: '8px',
+                                fontWeight: 'bold',
+                            }}
+                        >
+                            Войти
+                        </Button>
+                    )}
                 </Box>
             </Container>
         </AppBar>

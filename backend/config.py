@@ -1,4 +1,5 @@
 from database import Base, engine
+from settings import settings
 
 
 def init_db():
@@ -15,4 +16,5 @@ def init_db():
         practice_supervisor,
     )
 
+    settings.INSTANCE_DIR.mkdir(parents=True, exist_ok=True)
     Base.metadata.create_all(bind=engine)
