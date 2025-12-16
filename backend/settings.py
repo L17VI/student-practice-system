@@ -16,3 +16,6 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
+
+# Гарантируем существование каталога для базы данных на момент импорта настроек
+settings.INSTANCE_DIR.mkdir(parents=True, exist_ok=True)

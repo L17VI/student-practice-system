@@ -1,9 +1,11 @@
 from fastapi import FastAPI
 from api import user, auth, practice, applications, rop, supervisors, favorite
+from settings import settings
 from config import init_db
 from sqlalchemy import inspect
 from database import engine
 import uvicorn
+
 
 import os
 from contextlib import asynccontextmanager
