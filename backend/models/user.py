@@ -11,6 +11,9 @@ class UserModel(Base):
     image = Column(String)
     role = Column(String)
     password = Column(String)
+    phone = Column(String)
+    birth_date = Column(String)
 
     student = relationship("StudentModel", back_populates="user")
     supervisor = relationship("PracticeSupervisorModel", back_populates="user")
+    favorites = relationship("FavoriteModel", back_populates="user")

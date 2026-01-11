@@ -7,23 +7,40 @@ import Login from './pages/Login';
 import Home from './pages/Home';
 import PracticePage from './pages/PracticePage';
 import AccountPage from './pages/AccountPage';
-import PartnersCarousel from './components/PartnersCarousel';
 import userService from './services/userService';
 
 const VacanciesPage = () => <Typography variant="h4" component="h1">Вакансии</Typography>;
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('token'));
+    const [isAdmin, setIsAdmin] = useState(false);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const checkUser = async () => {
+            if (isAuthenticated) {
+                const user = await userService.getMe();
+                if (user && user.role === 'admin') {
+                    setIsAdmin(true);
+                } else {
+                    setIsAdmin(false);
+                }
+            } else {
+                setIsAdmin(false);
+            }
+        };
+        checkUser();
+    }, [isAuthenticated]);
 
     const handleLogin = () => {
         setIsAuthenticated(true);
-        navigate('/account');
+        navigate('/');
     };
 
     const handleLogout = () => {
         userService.logout();
         setIsAuthenticated(false);
+        setIsAdmin(false);
         navigate('/login');
     };
 
@@ -32,7 +49,8 @@ function App() {
             display: 'flex',
             flexDirection: 'column',
             minHeight: '100vh',
-            bgcolor: 'background.paper',
+            bgcolor: '#F6F6F6',
+            fontFamily: "'Montserrat', sans-serif",
         }}>
             <Header isAuthenticated={isAuthenticated} onLogout={handleLogout} />
 
@@ -42,18 +60,16 @@ function App() {
                 py: 4,
             }}>
                 <Routes>
-                    <Route path="/" element={<Home />} />
+                    <Route path="/" element={<Home isAdmin={isAdmin} />} />
                     <Route path="/practice" element={<PracticePage />} />
-                    <Route path="/account" element={<AccountPage />} />
+                    <Route path="/account" element={<AccountPage onLogout={handleLogout} />} />
+                    <Route path="/favorites" element={<AccountPage onLogout={handleLogout} />} />
+                    <Route path="/applications" element={<AccountPage onLogout={handleLogout} />} />
                     <Route path="/vacancies" element={<VacanciesPage />} />
                     <Route path="/login" element={<Login onLogin={handleLogin} />} />
                     <Route path="/register" element={<Registration />} />
                 </Routes>
             </Container>
-
-            <Box sx={{ width: '100%', my: 4 }}>
-                <PartnersCarousel />
-            </Box>
 
             <Footer />
         </Box>

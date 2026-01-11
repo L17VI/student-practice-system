@@ -12,4 +12,3 @@ class StudentModel(Base):
 
     user = relationship("UserModel", back_populates="student")
     group = relationship("GroupModel", back_populates="student")
-    favorite = relationship("FavoriteModel", back_populates="student")

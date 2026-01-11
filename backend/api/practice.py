@@ -1,9 +1,11 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from sqlalchemy import select
+from sqlalchemy import select, update, delete
 from database import get_db
 from models.practice import PracticeModel
+from models.user import UserModel
 from schemas.practice import PracticeAddSchema
+from api.auth import get_current_user
 
 
 router = APIRouter()
@@ -22,14 +24,72 @@ async def get_practice_by_id(practice_id: int, session: Session = Depends(get_db
     return result.scalars().first()
 
 @router.post("/")
-async def add_practice(data: PracticeAddSchema, session: Session = Depends(get_db)):
+async def add_practice(
+    data: PracticeAddSchema, 
+    session: Session = Depends(get_db),
+    current_user: UserModel = Depends(get_current_user)
+):
+    if current_user.role != 'admin':
+        raise HTTPException(status_code=403, detail="Not authorized")
+
     new_practice = PracticeModel(
         title=data.title,
+        company=data.company,
+        city=data.city,
+        format=data.format,
+        season=data.season,
+        total_seats=data.total_seats,
+        filled_seats=data.filled_seats,
         description=data.description,
         image=data.image,
         start_date=data.start_date,
         end_date=data.end_date
     )
     session.add(new_practice)
+    session.commit()
+    return {'ok': True}
+
+@router.put("/{practice_id}")
+async def update_practice(
+    practice_id: int, 
+    data: PracticeAddSchema, 
+    session: Session = Depends(get_db),
+    current_user: UserModel = Depends(get_current_user)
+):
+    if current_user.role != 'admin':
+        raise HTTPException(status_code=403, detail="Not authorized")
+    
+    stmt = update(PracticeModel).where(PracticeModel.id == practice_id).values(
+        title=data.title,
+        company=data.company,
+        city=data.city,
+        format=data.format,
+        season=data.season,
+        total_seats=data.total_seats,
+        filled_seats=data.filled_seats,
+        description=data.description,
+        image=data.image,
+        start_date=data.start_date,
+        end_date=data.end_date
+    )
+    result = session.execute(stmt)
+    if result.rowcount == 0:
+        raise HTTPException(status_code=404, detail="Practice not found")
+    session.commit()
+    return {'ok': True}
+
+@router.delete("/{practice_id}")
+async def delete_practice(
+    practice_id: int, 
+    session: Session = Depends(get_db),
+    current_user: UserModel = Depends(get_current_user)
+):
+    if current_user.role != 'admin':
+        raise HTTPException(status_code=403, detail="Not authorized")
+        
+    stmt = delete(PracticeModel).where(PracticeModel.id == practice_id)
+    result = session.execute(stmt)
+    if result.rowcount == 0:
+        raise HTTPException(status_code=404, detail="Practice not found")
     session.commit()
     return {'ok': True}

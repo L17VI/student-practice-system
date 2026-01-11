@@ -3,7 +3,10 @@ from api import user, auth, practice, applications, rop, supervisors, favorite
 from settings import settings
 from config import init_db
 from sqlalchemy import inspect
-from database import engine
+from database import engine, SessionLocal
+from models.practice import PracticeModel
+from models.user import UserModel
+from services.auth_service import get_password_hash
 import uvicorn
 
 
@@ -19,6 +22,41 @@ async def lifespan(app: FastAPI):
     tables = inspector.get_table_names()
     if KEY_TABLE not in tables:
         init_db()
+    
+    db = SessionLocal()
+    try:
+        # Seed practices
+        if "practices" in tables or True:
+             if db.query(PracticeModel).count() == 0:
+                practices_data = [
+                    PracticeModel(title='Backend-разработчик', format='Удалённо', season='Весна', company='ООО Програм', city='Владивосток', total_seats=10, filled_seats=7),
+                    PracticeModel(title='Backend-разработчик', format='Очно', season='Лето', company='ООО Програм', city='Владивосток', total_seats=5, filled_seats=4),
+                    PracticeModel(title='ML-разработчик', format='Гибрид', season='Весна', company='ООО ИскусствИнтел', city='Владивосток', total_seats=2, filled_seats=2),
+                    PracticeModel(title='DevOps-инженер', format='Удалённо', season='Весна', company='ООО ИскусствИнтел', city='Владивосток', total_seats=5, filled_seats=5),
+                    PracticeModel(title='Бизнес-аналитик', format='Гибрид', season='Лето', company='ООО Прогресс', city='Владивосток', total_seats=3, filled_seats=3),
+                    PracticeModel(title='UX/UI-дизайнер', format='Очно', season='Лето', company='ООО Прогресс', city='Владивосток', total_seats=20, filled_seats=11),
+                ]
+                db.add_all(practices_data)
+                db.commit()
+                print("Practices seeded")
+        
+        # Seed Admin
+        if db.query(UserModel).filter(UserModel.email == "admin@example.com").first() is None:
+            admin_user = UserModel(
+                email="admin@example.com",
+                password=get_password_hash("admin"),
+                fullname="Admin User",
+                role="admin"
+            )
+            db.add(admin_user)
+            db.commit()
+            print("Admin user seeded")
+
+    except Exception as e:
+        print(f"Error seeding data: {e}")
+    finally:
+        db.close()
+
     yield
 
 

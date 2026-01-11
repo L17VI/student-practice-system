@@ -14,10 +14,16 @@ class UserAddSchema(BaseModel):
     role: UserRole = Field(example='student, rop, ps, admin')
     image: Optional[str] = Field(default=None, example='https://example.com/image.jpg')
     password: str = Field(example='securepassword123')
+    phone: Optional[str] = None
+    birth_date: Optional[str] = None
 
     model_config = {"from_attributes": True}
 
+class UserUpdateSchema(BaseModel):
+    phone: Optional[str] = None
+    birth_date: Optional[str] = None
+    fullname: Optional[str] = None
+    image: Optional[str] = None
 
 class UserSchema(UserAddSchema):
     id: int
-

@@ -8,10 +8,18 @@ class PracticeModel(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String)
-    description = Column(String)
-    image = Column(String)
-    start_date = Column(String)
-    end_date = Column(String)
+    company = Column(String)
+    city = Column(String)
+    format = Column(String)
+    season = Column(String)
+    total_seats = Column(Integer, default=10)
+    filled_seats = Column(Integer, default=0)
+
+    # Optional fields
+    description = Column(String, nullable=True)
+    image = Column(String, nullable=True)
+    start_date = Column(String, nullable=True)
+    end_date = Column(String, nullable=True)
 
 
     document = relationship("DocumentModel", back_populates="practice")
