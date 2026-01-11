@@ -4,10 +4,17 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import { useNavigate } from 'react-router-dom';
 
 const PRIMARY_BLUE = '#006DB2';
 
 const Card = ({ data, isAdmin, onEdit, onDelete, isFavorite, onToggleFavorite }) => {
+    const navigate = useNavigate();
+
+    const handleDetailsClick = () => {
+        navigate(`/practice/${data.id}`);
+    };
+
     return (
         <Box
             sx={{
@@ -20,7 +27,13 @@ const Card = ({ data, isAdmin, onEdit, onDelete, isFavorite, onToggleFavorite })
                 height: '100%',
                 boxSizing: 'border-box',
                 position: 'relative',
+                cursor: 'pointer',
+                transition: 'transform 0.2s',
+                '&:hover': {
+                    transform: 'translateY(-5px)',
+                }
             }}
+            onClick={handleDetailsClick}
         >
             <Box display="flex" justifyContent="space-between" alignItems="flex-start">
                 <Typography
@@ -36,7 +49,7 @@ const Card = ({ data, isAdmin, onEdit, onDelete, isFavorite, onToggleFavorite })
                     {data.title}
                 </Typography>
                 {isAdmin && (
-                    <Box>
+                    <Box onClick={(e) => e.stopPropagation()}>
                         <IconButton size="small" onClick={() => onEdit(data)}><EditIcon /></IconButton>
                         <IconButton size="small" onClick={() => onDelete(data.id)} color="error"><DeleteIcon /></IconButton>
                     </Box>
@@ -56,7 +69,8 @@ const Card = ({ data, isAdmin, onEdit, onDelete, isFavorite, onToggleFavorite })
             {/* Company Info */}
             <Box sx={{ marginBottom: 'auto' }}>
                 <Typography sx={{ fontSize: '16px', marginBottom: '6px', fontFamily: "'Montserrat', sans-serif", color: '#000' }}>
-                    {data.company}
+                    {/* Fix: Access company.name instead of company object */}
+                    {data.company.name}
                 </Typography>
                 <Typography sx={{ fontSize: '15px', color: '#000', fontFamily: "'Montserrat', sans-serif" }}>
                     {data.city}
@@ -78,29 +92,30 @@ const Card = ({ data, isAdmin, onEdit, onDelete, isFavorite, onToggleFavorite })
             </Typography>
 
             {/* Actions */}
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '15px' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '15px' }} onClick={(e) => e.stopPropagation()}>
                 <Button
                     disableRipple
+                    onClick={handleDetailsClick}
                     sx={{
                         flexGrow: 1,
                         height: '45px',
                         borderRadius: '40px',
                         fontFamily: "'Montserrat', sans-serif",
-                        fontWeight: data.isAvailable ? 700 : 400,
+                        fontWeight: 700,
                         fontSize: '15px',
                         textTransform: 'none',
                         boxShadow: 'none',
-                        background: data.isAvailable ? PRIMARY_BLUE : 'rgba(250, 5, 9, 0.16)',
+                        background: data.isAvailable ? PRIMARY_BLUE : 'transparent',
                         color: data.isAvailable ? '#FFFFFF' : '#F43E41',
-                        cursor: data.isAvailable ? 'pointer' : 'not-allowed',
+                        border: data.isAvailable ? 'none' : '1px solid #F43E41',
+                        cursor: 'pointer',
                         '&:hover': {
-                            background: data.isAvailable ? PRIMARY_BLUE : 'rgba(250, 5, 9, 0.16)',
+                            background: data.isAvailable ? '#005a9e' : 'rgba(244, 62, 65, 0.05)',
                             boxShadow: 'none',
-                            opacity: data.isAvailable ? 0.9 : 1,
                         },
                     }}
                 >
-                    {data.isAvailable ? 'Записаться' : 'Места закончились'}
+                    {data.isAvailable ? 'Записаться' : 'Подробнее'}
                 </Button>
 
                 <IconButton

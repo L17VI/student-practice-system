@@ -42,22 +42,24 @@ const Login = ({ onLogin }) => {
     return (
         <Container component="main" maxWidth="xs">
             <Paper
-                elevation={3}
+                elevation={0}
                 sx={{
                     marginTop: 8,
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
-                    padding: 4,
-                    borderRadius: '16px',
+                    padding: '40px',
+                    borderRadius: '40px',
+                    boxShadow: '0px 10px 10px rgba(0, 0, 0, 0.15)',
+                    backgroundColor: '#FFFFFF'
                 }}
             >
-                <Typography component="h1" variant="h5" sx={{ fontWeight: 'bold' }}>
+                <Typography component="h1" variant="h5" sx={{ fontWeight: '700', fontFamily: "'Montserrat', sans-serif", mb: 2 }}>
                     Вход в аккаунт
                 </Typography>
-                <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, width: '100%' }}>
                     {error && (
-                        <Alert severity="error" sx={{ width: '100%', mb: 2 }}>
+                        <Alert severity="error" sx={{ width: '100%', mb: 2, borderRadius: '20px' }}>
                             {error}
                         </Alert>
                     )}
@@ -72,6 +74,11 @@ const Login = ({ onLogin }) => {
                         autoFocus
                         value={formData.email}
                         onChange={handleChange}
+                        sx={{
+                            '& .MuiInputLabel-root': {
+                                fontFamily: "'Montserrat', sans-serif",
+                            }
+                        }}
                     />
                     <TextField
                         margin="normal"
@@ -84,6 +91,11 @@ const Login = ({ onLogin }) => {
                         autoComplete="current-password"
                         value={formData.password}
                         onChange={handleChange}
+                        sx={{
+                            '& .MuiInputLabel-root': {
+                                fontFamily: "'Montserrat', sans-serif",
+                            }
+                        }}
                     />
                     <Button
                         type="submit"
@@ -93,16 +105,19 @@ const Login = ({ onLogin }) => {
                             mt: 3,
                             mb: 2,
                             py: 1.5,
-                            backgroundColor: '#5D6BC4',
-                            '&:hover': { backgroundColor: '#4a56a1' },
-                            borderRadius: '8px',
-                            fontWeight: 'bold',
+                            backgroundColor: '#006DB2',
+                            '&:hover': { backgroundColor: '#005a9e' },
+                            borderRadius: '30px',
+                            fontWeight: '700',
+                            fontFamily: "'Montserrat', sans-serif",
+                            textTransform: 'none',
+                            fontSize: '16px'
                         }}
                     >
                         Войти
                     </Button>
                     <Box textAlign="center">
-                        <Link component={RouterLink} to="/register" variant="body2">
+                        <Link component={RouterLink} to="/register" variant="body2" sx={{ fontFamily: "'Montserrat', sans-serif", color: '#006DB2', textDecoration: 'none', fontWeight: 500 }}>
                             {"Нет аккаунта? Зарегистрироваться"}
                         </Link>
                     </Box>

@@ -1,5 +1,5 @@
 from sqlalchemy.orm import relationship
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, ForeignKey
 from database import Base
 
 
@@ -8,8 +8,12 @@ class PracticeModel(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String)
-    company = Column(String)
-    city = Column(String)
+    
+    # Company relationship
+    company_id = Column(Integer, ForeignKey("companies.id"))
+    company = relationship("CompanyModel", back_populates="practices")
+
+    city = Column(String) # Location of the practice
     format = Column(String)
     season = Column(String)
     total_seats = Column(Integer, default=10)

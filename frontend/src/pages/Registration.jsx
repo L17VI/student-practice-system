@@ -36,7 +36,6 @@ const Registration = () => {
             return;
         }
 
-        // Проверка длины пароля на фронтенде
         if (new TextEncoder().encode(formData.password).length > 72) {
             setError('Пароль слишком длинный. Максимальная длина — 72 байта.');
             return;
@@ -58,27 +57,29 @@ const Registration = () => {
     return (
         <Container component="main" maxWidth="xs">
             <Paper
-                elevation={3}
+                elevation={0}
                 sx={{
                     marginTop: 8,
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
-                    padding: 4,
-                    borderRadius: '16px',
+                    padding: '40px',
+                    borderRadius: '40px',
+                    boxShadow: '0px 10px 10px rgba(0, 0, 0, 0.15)',
+                    backgroundColor: '#FFFFFF'
                 }}
             >
-                <Typography component="h1" variant="h5" sx={{ fontWeight: 'bold' }}>
+                <Typography component="h1" variant="h5" sx={{ fontWeight: '700', fontFamily: "'Montserrat', sans-serif", mb: 2 }}>
                     Регистрация
                 </Typography>
-                <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, width: '100%' }}>
                     {error && (
-                        <Alert severity="error" sx={{ width: '100%', mb: 2 }}>
+                        <Alert severity="error" sx={{ width: '100%', mb: 2, borderRadius: '20px' }}>
                             {error}
                         </Alert>
                     )}
                     {success && (
-                        <Alert severity="success" sx={{ width: '100%', mb: 2 }}>
+                        <Alert severity="success" sx={{ width: '100%', mb: 2, borderRadius: '20px' }}>
                             {success}
                         </Alert>
                     )}
@@ -93,6 +94,11 @@ const Registration = () => {
                         autoFocus
                         value={formData.fullname}
                         onChange={handleChange}
+                        sx={{
+                            '& .MuiInputLabel-root': {
+                                fontFamily: "'Montserrat', sans-serif",
+                            }
+                        }}
                     />
                     <TextField
                         margin="normal"
@@ -104,6 +110,11 @@ const Registration = () => {
                         autoComplete="email"
                         value={formData.email}
                         onChange={handleChange}
+                        sx={{
+                            '& .MuiInputLabel-root': {
+                                fontFamily: "'Montserrat', sans-serif",
+                            }
+                        }}
                     />
                     <TextField
                         margin="normal"
@@ -117,10 +128,15 @@ const Registration = () => {
                         value={formData.password}
                         onChange={handleChange}
                         inputProps={{
-                            maxLength: 72 // Визуальное ограничение, но реальная проверка по байтам
+                            maxLength: 72
                         }}
                         helperText={new TextEncoder().encode(formData.password).length > 72 ? "Пароль слишком длинный" : ""}
                         error={new TextEncoder().encode(formData.password).length > 72}
+                        sx={{
+                            '& .MuiInputLabel-root': {
+                                fontFamily: "'Montserrat', sans-serif",
+                            }
+                        }}
                     />
                     <Button
                         type="submit"
@@ -130,16 +146,19 @@ const Registration = () => {
                             mt: 3,
                             mb: 2,
                             py: 1.5,
-                            backgroundColor: '#5D6BC4',
-                            '&:hover': { backgroundColor: '#4a56a1' },
-                            borderRadius: '8px',
-                            fontWeight: 'bold',
+                            backgroundColor: '#006DB2',
+                            '&:hover': { backgroundColor: '#005a9e' },
+                            borderRadius: '30px',
+                            fontWeight: '700',
+                            fontFamily: "'Montserrat', sans-serif",
+                            textTransform: 'none',
+                            fontSize: '16px'
                         }}
                     >
                         Зарегистрироваться
                     </Button>
                     <Box textAlign="center">
-                        <Link component={RouterLink} to="/login" variant="body2">
+                        <Link component={RouterLink} to="/login" variant="body2" sx={{ fontFamily: "'Montserrat', sans-serif", color: '#006DB2', textDecoration: 'none', fontWeight: 500 }}>
                             {"Уже есть аккаунт? Войти"}
                         </Link>
                     </Box>

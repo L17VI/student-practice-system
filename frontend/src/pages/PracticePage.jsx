@@ -1,140 +1,273 @@
-import React from 'react';
-import { Box, Grid, Typography, Button, Stack, IconButton, Paper } from '@mui/material';
-import { MailOutline, Telegram, Phone, FavoriteBorder } from '@mui/icons-material';
+import React, { useState, useEffect } from 'react';
+import { Box, Typography, Button, Stack, IconButton } from '@mui/material';
+import { useParams, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import { PracticePageSkeleton } from '../components/Skeletons';
+
+const PRIMARY_BLUE = '#006DB2';
 
 const PracticePage = () => {
+    const { id } = useParams();
+    const navigate = useNavigate();
+    const [practice, setPractice] = useState(null);
+    const [isFavorite, setIsFavorite] = useState(false);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            setLoading(true);
+            try {
+                const [practiceRes, favoritesRes] = await Promise.all([
+                    axios.get(`/api/practice/${id}`),
+                    axios.get('/api/favorite/', {
+                        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+                    }).catch(() => ({ data: [] })) // Handle unauthenticated case
+                ]);
+
+                setPractice(practiceRes.data);
+                
+                // Check if favorite
+                const favoriteIds = favoritesRes.data.map(f => f.practice_id);
+                setIsFavorite(favoriteIds.includes(parseInt(id)));
+
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchData();
+    }, [id]);
+
+    const handleToggleFavorite = async () => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            alert("Пожалуйста, войдите в систему");
+            return;
+        }
+
+        try {
+            if (isFavorite) {
+                await axios.delete(`/api/favorite/${id}`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                setIsFavorite(false);
+            } else {
+                await axios.post('/api/favorite/', { practice_id: id }, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                setIsFavorite(true);
+            }
+        } catch (error) {
+            console.error("Error toggling favorite:", error);
+        }
+    };
+
+    if (loading) {
+        return <PracticePageSkeleton />;
+    }
+
+    if (!practice) {
+        return <Typography sx={{ p: 4, textAlign: 'center' }}>Практика не найдена</Typography>;
+    }
+
+    const availableSeats = practice.total_seats - practice.filled_seats;
+    const seatsText = availableSeats > 0 ? `Осталось мест: ${availableSeats} из ${practice.total_seats}` : 'Мест нет';
+
     return (
-        <Stack spacing={4}>
-            <Grid container spacing={4}>
-                <Grid item xs={12} md={7}>
-                    <Paper 
-                        variant="outlined"
-                        sx={{
-                            p: 3,
-                            borderRadius: '30px',
-                            borderColor: '#5D6BC4',
-                            boxShadow: '0px 4px 8px rgba(42, 50, 100, 0.1)',
-                            height: '100%'
+        <Box sx={{ maxWidth: '1200px', margin: '0 auto', padding: '40px 0 80px 0' }}>
+            
+            {/* Back Button */}
+            <Button 
+                onClick={() => navigate('/')} 
+                startIcon={<ArrowBackIcon />}
+                sx={{ 
+                    color: '#A3A8C9', 
+                    textTransform: 'none', 
+                    fontFamily: "'Montserrat', sans-serif",
+                    fontWeight: 500,
+                    mb: 4,
+                    '&:hover': { color: PRIMARY_BLUE, bgcolor: 'transparent' }
+                }}
+            >
+                Назад к каталогу
+            </Button>
+
+            <Box sx={{
+                display: 'grid',
+                gridTemplateColumns: { xs: '1fr', md: '1fr 360px' },
+                gap: '40px',
+                alignItems: 'start'
+            }}>
+                
+                {/* LEFT COLUMN: Content */}
+                <Box sx={{
+                    bgcolor: '#FFFFFF',
+                    borderRadius: '40px',
+                    boxShadow: '0px 10px 10px rgba(0, 0, 0, 0.15)',
+                    padding: '50px'
+                }}>
+                    <Typography variant="h1" sx={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 700, fontSize: '36px', lineHeight: 1.2, mb: 2 }}>
+                        {practice.title}
+                    </Typography>
+                    
+                    {/* Salary placeholder if needed, or omit */}
+                    {/* <Typography sx={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 700, fontSize: '24px', mb: 4 }}>
+                        от 40 000 ₽
+                    </Typography> */}
+
+                    {/* Tags */}
+                    <Box sx={{ display: 'flex', gap: '12px', mb: 5, flexWrap: 'wrap' }}>
+                        <Box sx={{ bgcolor: '#F6F6F6', borderRadius: '40px', px: 2.5, py: 1, display: 'flex', alignItems: 'center', gap: 1, fontSize: '14px', fontFamily: "'Montserrat', sans-serif" }}>
+                            <LocationOnIcon sx={{ fontSize: 18, color: '#666' }} /> {practice.city}
+                        </Box>
+                        <Box sx={{ bgcolor: '#F6F6F6', borderRadius: '40px', px: 2.5, py: 1, display: 'flex', alignItems: 'center', gap: 1, fontSize: '14px', fontFamily: "'Montserrat', sans-serif" }}>
+                            <AccessTimeIcon sx={{ fontSize: 18, color: '#666' }} /> {practice.format}
+                        </Box>
+                        <Box sx={{ bgcolor: '#F6F6F6', borderRadius: '40px', px: 2.5, py: 1, fontSize: '14px', fontFamily: "'Montserrat', sans-serif" }}>
+                            {practice.season}
+                        </Box>
+                    </Box>
+
+                    <Box sx={{ borderTop: '1px solid #EEE', my: 4 }} />
+
+                    {/* Description */}
+                    <Box sx={{ mb: 5 }}>
+                        <Typography variant="h3" sx={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 700, fontSize: '20px', mb: 2 }}>
+                            О практике
+                        </Typography>
+                        <Typography sx={{ fontFamily: "'Montserrat', sans-serif", fontSize: '16px', lineHeight: 1.6, color: 'rgba(0,0,0,0.8)', whiteSpace: 'pre-wrap' }}>
+                            {practice.description || "Описание отсутствует."}
+                        </Typography>
+                    </Box>
+
+                    {/* Tasks (Placeholder/Static for now as DB doesn't have it) */}
+                    <Box sx={{ mb: 5 }}>
+                        <Typography variant="h3" sx={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 700, fontSize: '20px', mb: 2 }}>
+                            Чем предстоит заниматься:
+                        </Typography>
+                        <ul style={{ paddingLeft: '20px', margin: 0 }}>
+                            <li style={{ fontFamily: "'Montserrat', sans-serif", fontSize: '16px', lineHeight: 1.6, marginBottom: '8px', color: 'rgba(0,0,0,0.8)' }}>
+                                Разработка и поддержка веб-приложений
+                            </li>
+                            <li style={{ fontFamily: "'Montserrat', sans-serif", fontSize: '16px', lineHeight: 1.6, marginBottom: '8px', color: 'rgba(0,0,0,0.8)' }}>
+                                Взаимодействие с командой дизайнеров и бэкенд-разработчиков
+                            </li>
+                        </ul>
+                    </Box>
+
+                    {/* Requirements (Placeholder) */}
+                    <Box sx={{ mb: 5 }}>
+                        <Typography variant="h3" sx={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 700, fontSize: '20px', mb: 2 }}>
+                            Что мы ждем от тебя:
+                        </Typography>
+                        <ul style={{ paddingLeft: '20px', margin: 0 }}>
+                            <li style={{ fontFamily: "'Montserrat', sans-serif", fontSize: '16px', lineHeight: 1.6, marginBottom: '8px', color: 'rgba(0,0,0,0.8)' }}>
+                                Базовые знания технологий (React, Python, etc.)
+                            </li>
+                            <li style={{ fontFamily: "'Montserrat', sans-serif", fontSize: '16px', lineHeight: 1.6, marginBottom: '8px', color: 'rgba(0,0,0,0.8)' }}>
+                                Желание учиться и развиваться
+                            </li>
+                        </ul>
+                    </Box>
+
+                </Box>
+
+                {/* RIGHT COLUMN: Sidebar */}
+                <Box sx={{
+                    bgcolor: '#FFFFFF',
+                    borderRadius: '40px',
+                    boxShadow: '0px 10px 10px rgba(0, 0, 0, 0.15)',
+                    padding: '30px',
+                    position: 'sticky',
+                    top: '20px'
+                }}>
+                    {/* Company Header */}
+                    <Box 
+                        onClick={() => navigate(`/company/${practice.company.name}`)}
+                        sx={{ 
+                            display: 'flex', 
+                            alignItems: 'center', 
+                            gap: 2, 
+                            mb: 3, 
+                            pb: 3, 
+                            borderBottom: '1px solid #F0F0F0',
+                            cursor: 'pointer',
+                            transition: 'opacity 0.2s',
+                            '&:hover': { opacity: 0.7 }
                         }}
                     >
-                        <Typography variant="h4" component="h1" sx={{ fontWeight: '700', mb: 2 }}>
-                            Web-разработчик
-                        </Typography>
-                        <Typography sx={{ fontSize: '16px', mb: 1 }}>
-                            формат практики: очное/заочное
-                        </Typography>
-                        <Typography sx={{ fontSize: '16px', mb: 1 }}>
-                            длительность практики: 14 дней
-                        </Typography>
-                        <Typography sx={{ fontSize: '16px', mb: 2 }}>
-                            компания:
-                        </Typography>
-                        <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
-                            <Button variant="contained" sx={{
-                                bgcolor: '#5D6BC4',
-                                borderRadius: '30px',
-                                color: '#FFFFFF',
-                                fontSize: '20px',
-                                py: 1,
-                                px: 4,
-                                flexGrow: 1,
-                            }}>
-                                Записаться
-                            </Button>
-                            <IconButton sx={{
-                                border: '1px solid #5D6BC4',
-                                borderRadius: '30px',
-                                width: '50px',
-                                height: '50px',
-                            }}>
-                                <FavoriteBorder sx={{ color: '#FF0004' }} />
-                            </IconButton>
-                        </Stack>
-                    </Paper>
-                </Grid>
-                <Grid item xs={12} md={5}>
-                    <Box sx={{ 
-                        p: 3, 
-                        height: '100%',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                    }}>
-                        <Typography sx={{ fontWeight: '500', fontSize: '64px', lineHeight: '1.2' }}>
-                            МЫ
-                        </Typography>
-                        <Typography sx={{ fontWeight: '500', fontSize: '48px', lineHeight: '1.2' }}>
-                            ЖДЁМ
-                        </Typography>
-                        <Typography sx={{ fontWeight: '500', fontSize: '48px', lineHeight: '1.2' }}>
-                            именно тебя!
-                        </Typography>
-                        <Typography sx={{ fontSize: '24px', mt: 2 }}>
-                            Для связи с нами
-                        </Typography>
-                        <Stack direction="row" spacing={1} sx={{ mt: 2 }}>
-                            <IconButton sx={{ bgcolor: '#5D6BC4', color: 'white', width: 50, height: 50 }}>
-                                <MailOutline />
-                            </IconButton>
-                            <IconButton sx={{ bgcolor: '#5D6BC4', color: 'white', width: 50, height: 50 }}>
-                                <Telegram />
-                            </IconButton>
-                            <IconButton sx={{ bgcolor: '#5D6BC4', color: 'white', width: 50, height: 50 }}>
-                                <Phone />
-                            </IconButton>
-                        </Stack>
+                        <Box sx={{ width: 50, height: 50, bgcolor: '#D9D9D9', borderRadius: '12px' }} />
+                        <Box>
+                            <Typography sx={{ fontWeight: 700, fontSize: '16px', fontFamily: "'Montserrat', sans-serif", color: PRIMARY_BLUE }}>
+                                {practice.company.name}
+                            </Typography>
+                            <Typography sx={{ fontSize: '12px', color: '#999', fontFamily: "'Montserrat', sans-serif" }}>
+                                IT-компания
+                            </Typography>
+                        </Box>
                     </Box>
-                </Grid>
-            </Grid>
 
-            <Box>
-                <Typography variant="h5" component="h3" sx={{ fontWeight: '700', mb: 2 }}>
-                    Обязанности
-                </Typography>
-                <Typography component="ul" sx={{ listStyle: 'none', p: 0, fontSize: '20px' }}>
-                    <li>- разработка и структурирование сайтов и веб-приложений;</li>
-                    <li>- настройка серверной части и корректировка работы с данными;</li>
-                    <li>- вёрстка и отладка пользовательского интерфейса;</li>
-                    <li>- тестирование фронтенда и бэкенда, исправление ошибок.</li>
-                </Typography>
-            </Box>
+                    {/* Seats */}
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 3 }}>
+                        <Box sx={{ width: 8, height: 8, bgcolor: availableSeats > 0 ? '#08A600' : '#F43E41', borderRadius: '50%' }} />
+                        <Typography sx={{ fontSize: '14px', fontWeight: 500, color: availableSeats > 0 ? '#08A600' : '#F43E41', fontFamily: "'Montserrat', sans-serif" }}>
+                            {seatsText}
+                        </Typography>
+                    </Box>
 
-            <Box>
-                <Typography variant="h5" component="h3" sx={{ fontWeight: '700', mb: 2 }}>
-                    Условия
-                </Typography>
-                <Typography component="ul" sx={{ listStyle: 'none', p: 0, fontSize: '20px' }}>
-                    <li>- гибкий график</li>
-                    <li>- обучение на реальных задачах</li>
-                    <li>- доступ к обучающим курсам компании</li>
-                    <li>- работа под руководством опытных специалистов</li>
-                </Typography>
-            </Box>
+                    {/* Actions */}
+                    <Stack spacing={1.5}>
+                        <Button 
+                            variant="contained" 
+                            fullWidth
+                            disabled={availableSeats <= 0}
+                            sx={{ 
+                                bgcolor: PRIMARY_BLUE, 
+                                borderRadius: '40px', 
+                                height: '45px',
+                                textTransform: 'none',
+                                fontFamily: "'Montserrat', sans-serif",
+                                fontWeight: 700,
+                                fontSize: '15px',
+                                '&:hover': { bgcolor: '#005a9e' }
+                            }}
+                        >
+                            {availableSeats > 0 ? 'Откликнуться' : 'Места закончились'}
+                        </Button>
 
-            <Box>
-                <Typography variant="h5" component="h3" sx={{ fontWeight: '400', mb: 2 }}>
-                    Похожие практики
-                </Typography>
-                <Grid container spacing={2}>
-                    {[...Array(4)].map((_, i) => (
-                        <Grid item xs={12} sm={6} md={3} key={i}>
-                            <Paper variant="outlined" sx={{
-                                borderRadius: '30px',
-                                height: '170px',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                '&::after': {
-                                    content: '"📷"',
-                                    fontSize: '50px',
-                                }
-                            }} />
-                        </Grid>
-                    ))}
-                </Grid>
+                        <Button 
+                            variant="outlined" 
+                            fullWidth
+                            onClick={handleToggleFavorite}
+                            startIcon={isFavorite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+                            sx={{ 
+                                borderColor: '#F43E41', 
+                                color: '#F43E41',
+                                borderRadius: '40px', 
+                                height: '45px',
+                                textTransform: 'none',
+                                fontFamily: "'Montserrat', sans-serif",
+                                fontWeight: 500,
+                                '&:hover': { bgcolor: 'rgba(244, 62, 65, 0.05)', borderColor: '#F43E41' }
+                            }}
+                        >
+                            {isFavorite ? 'В избранном' : 'В избранное'}
+                        </Button>
+                    </Stack>
+
+                    <Typography sx={{ mt: 3, fontSize: '12px', color: '#AAA', textAlign: 'center', fontFamily: "'Montserrat', sans-serif" }}>
+                        Опубликовано недавно
+                    </Typography>
+                </Box>
+
             </Box>
-        </Stack>
+        </Box>
     );
 };
 

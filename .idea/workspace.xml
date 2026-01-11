@@ -4,28 +4,28 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="65bc21dc-e012-4950-854f-aafa51cddd42" name="Changes" comment="///">
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/Card.jsx" afterDir="false" />
+    <list default="true" id="65bc21dc-e012-4950-854f-aafa51cddd42" name="Changes" comment="каталог практик, лк с подключенным беком">
+      <change afterPath="$PROJECT_DIR$/backend/models/company.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/CompanyCard.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/Skeletons.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/pages/ApplicationsPage.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/pages/CompanyPage.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/pages/ROPApplicationsPage.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api/favorite.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/api/favorite.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/api/practice.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/api/practice.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/api/user.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/models/favorite.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/models/favorite.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/models/practice.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/models/practice.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/models/student.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/models/student.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/models/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/models/user.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/schemas/favorite.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/schemas/favorite.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/schemas/company.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/schemas/company.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/schemas/practice.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/schemas/practice.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/schemas/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/schemas/user.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/public/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/Card.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Card.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/Header.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Header.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/pages/AccountPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/AccountPage.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/pages/Home.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Home.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/services/userService.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/services/userService.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/theme.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/theme.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Login.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Login.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/PracticePage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/PracticePage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Registration.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Registration.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -85,6 +85,11 @@
     "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
     "to.speed.mode.migration.done": "true",
     "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "sqlite"
+    ]
   }
 }]]></component>
   <component name="ReactDesignerToolWindowState">
@@ -162,7 +167,12 @@
       <workItem from="1764770153681" duration="2568000" />
       <workItem from="1765848848906" duration="1908000" />
       <workItem from="1765850767486" duration="4895000" />
-      <workItem from="1768101983619" duration="16478000" />
+      <workItem from="1768101983619" duration="18625000" />
+      <workItem from="1768386482068" duration="2238000" />
+      <workItem from="1768449578528" duration="6832000" />
+      <workItem from="1768553752356" duration="2175000" />
+      <workItem from="1768981220083" duration="6260000" />
+      <workItem from="1769512270522" duration="9230000" />
     </task>
     <task id="LOCAL-00001" summary="короче фронт теперь соеденен с беком">
       <option name="closed" value="true" />
@@ -188,7 +198,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765862401936</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="каталог практик, лк с подключенным беком">
+      <option name="closed" value="true" />
+      <created>1768134634716</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1768134634716</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -197,7 +215,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="короче фронт теперь соеденен с беком" />
     <MESSAGE value="///" />
-    <option name="LAST_COMMIT_MESSAGE" value="///" />
+    <MESSAGE value="каталог практик, лк с подключенным беком" />
+    <option name="LAST_COMMIT_MESSAGE" value="каталог практик, лк с подключенным беком" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/student_practice_system$main.coverage" NAME="main Coverage Results" MODIFIED="1765850624201" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend" />

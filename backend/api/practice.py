@@ -1,9 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from sqlalchemy import select, update, delete
 from database import get_db
 from models.practice import PracticeModel
 from models.user import UserModel
+from models.company import CompanyModel
 from schemas.practice import PracticeAddSchema
 from api.auth import get_current_user
 
@@ -13,13 +14,13 @@ router = APIRouter()
 
 @router.get("/")
 async def get_practices(session: Session = Depends(get_db)):
-    query = select(PracticeModel)
+    query = select(PracticeModel).options(joinedload(PracticeModel.company))
     result = session.execute(query)
     return result.scalars().all()
 
 @router.get("/{practice_id}")
 async def get_practice_by_id(practice_id: int, session: Session = Depends(get_db)):
-    query = select(PracticeModel).where(PracticeModel.id == practice_id)
+    query = select(PracticeModel).options(joinedload(PracticeModel.company)).where(PracticeModel.id == practice_id)
     result = session.execute(query)
     return result.scalars().first()
 
@@ -32,9 +33,16 @@ async def add_practice(
     if current_user.role != 'admin':
         raise HTTPException(status_code=403, detail="Not authorized")
 
+    # Check or create company
+    company = session.query(CompanyModel).filter(CompanyModel.name == data.company).first()
+    if not company:
+        company = CompanyModel(name=data.company, city=data.city)
+        session.add(company)
+        session.flush()
+
     new_practice = PracticeModel(
         title=data.title,
-        company=data.company,
+        company_id=company.id,
         city=data.city,
         format=data.format,
         season=data.season,
@@ -59,9 +67,16 @@ async def update_practice(
     if current_user.role != 'admin':
         raise HTTPException(status_code=403, detail="Not authorized")
     
+    # Check or create company
+    company = session.query(CompanyModel).filter(CompanyModel.name == data.company).first()
+    if not company:
+        company = CompanyModel(name=data.company, city=data.city)
+        session.add(company)
+        session.flush()
+
     stmt = update(PracticeModel).where(PracticeModel.id == practice_id).values(
         title=data.title,
-        company=data.company,
+        company_id=company.id,
         city=data.city,
         format=data.format,
         season=data.season,

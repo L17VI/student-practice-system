@@ -1,8 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { Box, Typography, Button, Menu, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Grid } from '@mui/material';
+import React, { useState, useEffect, useMemo } from 'react';
+import { Box, Typography, Button, Menu, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Grid, IconButton, Checkbox, FormControlLabel } from '@mui/material';
 import axios from 'axios';
 import AddIcon from '@mui/icons-material/Add';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import CheckIcon from '@mui/icons-material/Check';
 import Card from '../components/Card';
+import CompanyCard from '../components/CompanyCard';
+import { CardSkeleton, CompanyCardSkeleton } from '../components/Skeletons';
 
 // --- Constants ---
 const PRIMARY_BLUE = '#006DB2';
@@ -52,7 +56,10 @@ const AddEditDialog = ({ open, handleClose, practice, handleSave }) => {
 
     useEffect(() => {
         if (practice) {
-            setFormData(practice);
+            setFormData({
+                ...practice,
+                company: practice.company.name // Extract name for input
+            });
         } else {
             setFormData({
                 title: '',
@@ -119,21 +126,28 @@ const Home = ({ isAdmin }) => {
     const [practices, setPractices] = useState([]);
     const [filteredPractices, setFilteredPractices] = useState([]);
     const [favorites, setFavorites] = useState([]);
+    const [viewMode, setViewMode] = useState('vacancies');
+    const [loading, setLoading] = useState(true);
 
     // Filter States
     const [showAvailableOnly, setShowAvailableOnly] = useState(false);
     const [formatFilter, setFormatFilter] = useState(null);
     const [seasonFilter, setSeasonFilter] = useState(null);
+    const [selectedCities, setSelectedCities] = useState([]); // New state for city filter
+    const [sortOption, setSortOption] = useState(null); // 'seats', 'az', 'za', 'popularity'
 
     // Menu Anchors
     const [formatAnchor, setFormatAnchor] = useState(null);
     const [seasonAnchor, setSeasonAnchor] = useState(null);
+    const [cityAnchor, setCityAnchor] = useState(null); // New anchor for city filter
+    const [sortAnchor, setSortAnchor] = useState(null);
 
     // Dialog State
     const [dialogOpen, setDialogOpen] = useState(false);
     const [currentPractice, setCurrentPractice] = useState(null);
 
     const fetchPractices = async () => {
+        setLoading(true);
         try {
             const response = await axios.get('/api/practice/');
             const data = response.data.map(p => {
@@ -156,6 +170,8 @@ const Home = ({ isAdmin }) => {
             setFilteredPractices(data);
         } catch (error) {
             console.error("Error fetching practices:", error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -166,7 +182,6 @@ const Home = ({ isAdmin }) => {
             const response = await axios.get('/api/favorite/', {
                 headers: { Authorization: `Bearer ${token}` }
             });
-            // Fixed: use practice_id (snake_case) as returned by backend
             setFavorites(response.data.map(f => f.practice_id));
         } catch (error) {
             console.error("Error fetching favorites:", error);
@@ -178,9 +193,16 @@ const Home = ({ isAdmin }) => {
         fetchFavorites();
     }, []);
 
-    // Apply Filters
+    // Extract unique cities
+    const uniqueCities = useMemo(() => {
+        const cities = new Set();
+        practices.forEach(p => cities.add(p.city));
+        return Array.from(cities).sort();
+    }, [practices]);
+
+    // Apply Filters and Sorting
     useEffect(() => {
-        let result = practices;
+        let result = [...practices];
 
         if (showAvailableOnly) {
             result = result.filter(p => p.isAvailable);
@@ -194,8 +216,42 @@ const Home = ({ isAdmin }) => {
             result = result.filter(p => p.season === seasonFilter);
         }
 
+        // City Filter
+        if (selectedCities.length > 0) {
+            result = result.filter(p => selectedCities.includes(p.city));
+        }
+
+        // Sorting
+        if (sortOption === 'seats') {
+            result.sort((a, b) => b.total_seats - a.total_seats);
+        } else if (sortOption === 'az') {
+            result.sort((a, b) => a.title.localeCompare(b.title));
+        } else if (sortOption === 'za') {
+            result.sort((a, b) => b.title.localeCompare(a.title));
+        } else if (sortOption === 'popularity') {
+            // Placeholder for popularity sort
+            // Currently does nothing or could sort by ID or random
+        }
+
         setFilteredPractices(result);
-    }, [practices, showAvailableOnly, formatFilter, seasonFilter]);
+    }, [practices, showAvailableOnly, formatFilter, seasonFilter, selectedCities, sortOption]);
+
+    // Group by Company
+    const companies = useMemo(() => {
+        const groups = {};
+        filteredPractices.forEach(practice => {
+            const companyName = practice.company.name;
+            if (!groups[companyName]) {
+                groups[companyName] = {
+                    name: companyName,
+                    city: practice.company.city,
+                    practices: []
+                };
+            }
+            groups[companyName].practices.push(practice);
+        });
+        return Object.values(groups);
+    }, [filteredPractices]);
 
     // Handlers
     const handleFormatClick = (event) => setFormatAnchor(event.currentTarget);
@@ -208,6 +264,20 @@ const Home = ({ isAdmin }) => {
     const handleSeasonClose = (season) => {
         setSeasonAnchor(null);
         if (season) setSeasonFilter(season === 'Все' ? null : season);
+    };
+
+    const handleCityClick = (event) => setCityAnchor(event.currentTarget);
+    const handleCityToggle = (city) => {
+        setSelectedCities(prev => 
+            prev.includes(city) ? prev.filter(c => c !== city) : [...prev, city]
+        );
+    };
+    const handleCityClose = () => setCityAnchor(null);
+
+    const handleSortClick = (event) => setSortAnchor(event.currentTarget);
+    const handleSortClose = (option) => {
+        setSortAnchor(null);
+        if (option) setSortOption(option);
     };
 
     // Admin Handlers
@@ -288,10 +358,10 @@ const Home = ({ isAdmin }) => {
     };
 
     return (
-        <Box sx={{ maxWidth: '1147px', margin: '0 auto', padding: '40px 0 80px 0' }}>
+        <Box sx={{ maxWidth: '1200px', margin: '0 auto', padding: '40px 0 80px 0' }}>
             {/* Titles */}
             <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
-                <Typography variant="h1" sx={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 500, fontSize: '36px', color: '#000000' }}>
+                <Typography variant="h1" sx={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 500, fontSize: { xs: '28px', md: '36px' }, color: '#000000' }}>
                     Каталог практик
                 </Typography>
                 {isAdmin && (
@@ -300,7 +370,7 @@ const Home = ({ isAdmin }) => {
                     </Button>
                 )}
             </Box>
-            <Typography sx={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 500, fontSize: '24px', color: 'rgba(0, 0, 0, 0.66)', marginBottom: '40px' }}>
+            <Typography sx={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 500, fontSize: { xs: '18px', md: '24px' }, color: 'rgba(0, 0, 0, 0.66)', marginBottom: '40px' }}>
                 Выберите практику и подайте заявку
             </Typography>
 
@@ -318,15 +388,49 @@ const Home = ({ isAdmin }) => {
                     flexWrap: 'wrap',
                 }}
             >
+                {/* View Mode Toggle */}
+                <Box sx={{ bgcolor: '#F6F6F6', borderRadius: '40px', p: 0.5, display: 'flex' }}>
+                    <Button 
+                        onClick={() => setViewMode('vacancies')}
+                        sx={{ 
+                            borderRadius: '40px', 
+                            px: 3, 
+                            py: 1,
+                            textTransform: 'none',
+                            fontFamily: "'Montserrat', sans-serif",
+                            fontWeight: 600,
+                            bgcolor: viewMode === 'vacancies' ? '#FFFFFF' : 'transparent',
+                            color: viewMode === 'vacancies' ? PRIMARY_BLUE : '#A3A8C9',
+                            boxShadow: viewMode === 'vacancies' ? '0px 2px 5px rgba(0,0,0,0.1)' : 'none',
+                            '&:hover': { bgcolor: viewMode === 'vacancies' ? '#FFFFFF' : 'rgba(0,0,0,0.05)' }
+                        }}
+                    >
+                        Вакансии
+                    </Button>
+                    <Button 
+                        onClick={() => setViewMode('companies')}
+                        sx={{ 
+                            borderRadius: '40px', 
+                            px: 3, 
+                            py: 1,
+                            textTransform: 'none',
+                            fontFamily: "'Montserrat', sans-serif",
+                            fontWeight: 600,
+                            bgcolor: viewMode === 'companies' ? '#FFFFFF' : 'transparent',
+                            color: viewMode === 'companies' ? PRIMARY_BLUE : '#A3A8C9',
+                            boxShadow: viewMode === 'companies' ? '0px 2px 5px rgba(0,0,0,0.1)' : 'none',
+                            '&:hover': { bgcolor: viewMode === 'companies' ? '#FFFFFF' : 'rgba(0,0,0,0.05)' }
+                        }}
+                    >
+                        Компании
+                    </Button>
+                </Box>
+
+                <Box sx={{ width: '1px', height: '30px', bgcolor: '#E0E0E0', mx: 1, display: { xs: 'none', sm: 'block' } }} />
+
                 <FilterButton>Подходит мне</FilterButton>
                 
-                <FilterButton 
-                    active={showAvailableOnly} 
-                    onClick={() => setShowAvailableOnly(!showAvailableOnly)}
-                >
-                    Свободные
-                </FilterButton>
-
+                {/* Format Filter */}
                 <FilterButton 
                     active={!!formatFilter} 
                     onClick={handleFormatClick}
@@ -344,6 +448,7 @@ const Home = ({ isAdmin }) => {
                     <MenuItem onClick={() => handleFormatClose('Гибрид')}>Гибрид</MenuItem>
                 </Menu>
 
+                {/* Season Filter */}
                 <FilterButton 
                     active={!!seasonFilter} 
                     onClick={handleSeasonClick}
@@ -360,40 +465,72 @@ const Home = ({ isAdmin }) => {
                     <MenuItem onClick={() => handleSeasonClose('Лето')}>Лето</MenuItem>
                 </Menu>
 
-                <FilterButton>Оплата ▾</FilterButton>
+                {/* City Filter */}
+                <FilterButton 
+                    active={selectedCities.length > 0} 
+                    onClick={handleCityClick}
+                >
+                    {selectedCities.length > 0 ? `Город (${selectedCities.length})` : 'Город'} ▾
+                </FilterButton>
+                <Menu
+                    anchorEl={cityAnchor}
+                    open={Boolean(cityAnchor)}
+                    onClose={handleCityClose}
+                    PaperProps={{ style: { maxHeight: 220, borderRadius: '16px', marginTop: '8px' } }}
+                >
+                    {uniqueCities.map((city) => {
+                        const isSelected = selectedCities.includes(city);
+                        return (
+                            <MenuItem 
+                                key={city} 
+                                onClick={() => handleCityToggle(city)}
+                                sx={{ 
+                                    display: 'flex', 
+                                    alignItems: 'center',
+                                    fontFamily: "'Montserrat', sans-serif",
+                                    fontSize: '14px',
+                                    color: isSelected ? PRIMARY_BLUE : '#000',
+                                    fontWeight: isSelected ? 600 : 400,
+                                    py: 1.5,
+                                    gap: 1.5
+                                }}
+                            >
+                                <Box sx={{ width: 24, display: 'flex', justifyContent: 'center' }}>
+                                    {isSelected && <CheckIcon sx={{ color: PRIMARY_BLUE, fontSize: 20 }} />}
+                                </Box>
+                                {city}
+                            </MenuItem>
+                        );
+                    })}
+                </Menu>
 
-                {/* Settings Button */}
-                <Box
-                    component="button"
+                {/* Sort Button */}
+                <IconButton
+                    onClick={handleSortClick}
                     sx={{
                         marginLeft: 'auto',
-                        background: 'transparent',
-                        border: '2px solid #000',
-                        width: '40px',
-                        height: '40px',
-                        borderRadius: '10px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        cursor: 'pointer',
-                        padding: 0,
+                        background: '#F6F6F6',
+                        border: '1px solid #E0E0E0',
+                        width: '48px',
+                        height: '48px',
+                        borderRadius: '15px',
                         '&:hover': {
-                            background: 'rgba(0,0,0,0.05)',
+                            background: '#E0E0E0',
                         },
                     }}
                 >
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M4 21V14" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                        <path d="M4 10V3" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                        <path d="M12 21V12" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                        <path d="M12 8V3" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                        <path d="M20 21V16" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                        <path d="M20 12V3" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                        <path d="M1 14H7" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                        <path d="M9 8H15" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                        <path d="M17 16H23" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                </Box>
+                    <FilterAltIcon sx={{ color: '#A3A8C9' }} />
+                </IconButton>
+                <Menu
+                    anchorEl={sortAnchor}
+                    open={Boolean(sortAnchor)}
+                    onClose={() => handleSortClose(null)}
+                >
+                    <MenuItem onClick={() => handleSortClose('popularity')}>По популярности</MenuItem>
+                    <MenuItem onClick={() => handleSortClose('seats')}>По количеству мест</MenuItem>
+                    <MenuItem onClick={() => handleSortClose('az')}>По названию (А-Я)</MenuItem>
+                    <MenuItem onClick={() => handleSortClose('za')}>По названию (Я-А)</MenuItem>
+                </Menu>
             </Box>
 
             {/* Cards Grid */}
@@ -404,17 +541,33 @@ const Home = ({ isAdmin }) => {
                     gap: '40px',
                 }}
             >
-                {filteredPractices.map((practice) => (
-                    <Card 
-                        key={practice.id} 
-                        data={practice} 
-                        isAdmin={isAdmin}
-                        onEdit={handleEditClick}
-                        onDelete={handleDeleteClick}
-                        isFavorite={favorites.includes(practice.id)}
-                        onToggleFavorite={handleToggleFavorite}
-                    />
-                ))}
+                {loading ? (
+                    // Skeletons
+                    [...Array(6)].map((_, i) => (
+                        viewMode === 'vacancies' ? <CardSkeleton key={i} /> : <CompanyCardSkeleton key={i} />
+                    ))
+                ) : (
+                    viewMode === 'vacancies' ? (
+                        filteredPractices.map((practice) => (
+                            <Card 
+                                key={practice.id} 
+                                data={practice} 
+                                isAdmin={isAdmin}
+                                onEdit={handleEditClick}
+                                onDelete={handleDeleteClick}
+                                isFavorite={favorites.includes(practice.id)}
+                                onToggleFavorite={handleToggleFavorite}
+                            />
+                        ))
+                    ) : (
+                        companies.map((company) => (
+                            <CompanyCard 
+                                key={company.name} 
+                                company={company} 
+                            />
+                        ))
+                    )
+                )}
             </Box>
 
             <AddEditDialog 
