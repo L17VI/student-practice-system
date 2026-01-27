@@ -11,29 +11,43 @@ import { PracticePageSkeleton } from '../components/Skeletons';
 
 const PRIMARY_BLUE = '#006DB2';
 
+const statusLabels = {
+    draft: 'Черновик', // Should not be seen in list usually, but kept for safety
+    review: 'На рассмотрении',
+    accepted: 'Принята',
+    rejected: 'Отклонена',
+    changes_requested: 'Требует правок',
+    withdrawn: 'Отозвана'
+};
+
 const PracticePage = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [practice, setPractice] = useState(null);
     const [isFavorite, setIsFavorite] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [application, setApplication] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
             try {
-                const [practiceRes, favoritesRes] = await Promise.all([
+                const token = localStorage.getItem('token');
+                const headers = token ? { Authorization: `Bearer ${token}` } : {};
+
+                const [practiceRes, favoritesRes, applicationsRes] = await Promise.all([
                     axios.get(`/api/practice/${id}`),
-                    axios.get('/api/favorite/', {
-                        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-                    }).catch(() => ({ data: [] })) // Handle unauthenticated case
+                    axios.get('/api/favorite/', { headers }).catch(() => ({ data: [] })),
+                    axios.get('/api/applications/my', { headers }).catch(() => ({ data: [] }))
                 ]);
 
                 setPractice(practiceRes.data);
                 
-                // Check if favorite
                 const favoriteIds = favoritesRes.data.map(f => f.practice_id);
                 setIsFavorite(favoriteIds.includes(parseInt(id)));
+
+                const myApp = applicationsRes.data.find(app => app.practice_id === parseInt(id));
+                setApplication(myApp);
 
             } catch (error) {
                 console.error("Error fetching data:", error);
@@ -66,6 +80,16 @@ const PracticePage = () => {
         } catch (error) {
             console.error("Error toggling favorite:", error);
         }
+    };
+
+    const handleApply = () => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            navigate('/login');
+            return;
+        }
+        // Navigate to application form (draft)
+        navigate(`/practice/${id}/apply`);
     };
 
     if (loading) {
@@ -116,11 +140,6 @@ const PracticePage = () => {
                         {practice.title}
                     </Typography>
                     
-                    {/* Salary placeholder if needed, or omit */}
-                    {/* <Typography sx={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 700, fontSize: '24px', mb: 4 }}>
-                        от 40 000 ₽
-                    </Typography> */}
-
                     {/* Tags */}
                     <Box sx={{ display: 'flex', gap: '12px', mb: 5, flexWrap: 'wrap' }}>
                         <Box sx={{ bgcolor: '#F6F6F6', borderRadius: '40px', px: 2.5, py: 1, display: 'flex', alignItems: 'center', gap: 1, fontSize: '14px', fontFamily: "'Montserrat', sans-serif" }}>
@@ -146,7 +165,7 @@ const PracticePage = () => {
                         </Typography>
                     </Box>
 
-                    {/* Tasks (Placeholder/Static for now as DB doesn't have it) */}
+                    {/* Tasks */}
                     <Box sx={{ mb: 5 }}>
                         <Typography variant="h3" sx={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 700, fontSize: '20px', mb: 2 }}>
                             Чем предстоит заниматься:
@@ -161,7 +180,7 @@ const PracticePage = () => {
                         </ul>
                     </Box>
 
-                    {/* Requirements (Placeholder) */}
+                    {/* Requirements */}
                     <Box sx={{ mb: 5 }}>
                         <Typography variant="h3" sx={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 700, fontSize: '20px', mb: 2 }}>
                             Что мы ждем от тебя:
@@ -223,23 +242,45 @@ const PracticePage = () => {
 
                     {/* Actions */}
                     <Stack spacing={1.5}>
-                        <Button 
-                            variant="contained" 
-                            fullWidth
-                            disabled={availableSeats <= 0}
-                            sx={{ 
-                                bgcolor: PRIMARY_BLUE, 
-                                borderRadius: '40px', 
-                                height: '45px',
-                                textTransform: 'none',
-                                fontFamily: "'Montserrat', sans-serif",
-                                fontWeight: 700,
-                                fontSize: '15px',
-                                '&:hover': { bgcolor: '#005a9e' }
-                            }}
-                        >
-                            {availableSeats > 0 ? 'Откликнуться' : 'Места закончились'}
-                        </Button>
+                        {application ? (
+                            <Button 
+                                variant="contained" 
+                                fullWidth
+                                onClick={() => navigate('/applications')}
+                                sx={{ 
+                                    bgcolor: '#F6F6F6', 
+                                    color: PRIMARY_BLUE,
+                                    borderRadius: '40px', 
+                                    height: '45px',
+                                    textTransform: 'none',
+                                    fontFamily: "'Montserrat', sans-serif",
+                                    fontWeight: 700,
+                                    fontSize: '15px',
+                                    '&:hover': { bgcolor: '#E0E0E0' }
+                                }}
+                            >
+                                {statusLabels[application.status]}
+                            </Button>
+                        ) : (
+                            <Button 
+                                variant="contained" 
+                                fullWidth
+                                disabled={availableSeats <= 0}
+                                onClick={handleApply}
+                                sx={{ 
+                                    bgcolor: PRIMARY_BLUE, 
+                                    borderRadius: '40px', 
+                                    height: '45px',
+                                    textTransform: 'none',
+                                    fontFamily: "'Montserrat', sans-serif",
+                                    fontWeight: 700,
+                                    fontSize: '15px',
+                                    '&:hover': { bgcolor: '#005a9e' }
+                                }}
+                            >
+                                {availableSeats > 0 ? 'Записаться' : 'Места закончились'}
+                            </Button>
+                        )}
 
                         <Button 
                             variant="outlined" 

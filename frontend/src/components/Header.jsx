@@ -81,6 +81,7 @@ const Logo = ({ theme = 'light', role }) => {
 export function Header({ isAuthenticated, role }) {
     const location = useLocation();
     const isActive = (path) => location.pathname === path;
+    const isAccountActive = ['/account', '/favorites'].includes(location.pathname);
 
     // Ссылки для студента (по умолчанию)
     let navLinks = [
@@ -162,10 +163,10 @@ export function Header({ isAuthenticated, role }) {
                             fontFamily: "'Montserrat', sans-serif",
                             fontSize: { xs: '14px', md: '16px' },
                             color: PRIMARY_BLUE,
-                            fontWeight: isActive('/account') || isActive('/login') ? 700 : 400,
+                            fontWeight: isAccountActive || isActive('/login') ? 700 : 400,
                             position: 'relative',
                             whiteSpace: 'nowrap',
-                            '&::after': isActive('/account') || isActive('/login') ? {
+                            '&::after': isAccountActive || isActive('/login') ? {
                                 content: '""',
                                 position: 'absolute',
                                 width: '100%',

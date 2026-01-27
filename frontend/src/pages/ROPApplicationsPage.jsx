@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Typography, Button, Grid, IconButton, InputBase, Stack, Chip } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import FilterListIcon from '@mui/icons-material/FilterList';
@@ -9,69 +9,11 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import ReplayIcon from '@mui/icons-material/Replay';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const PRIMARY_BLUE = '#006DB2';
 const TEXT_GRAY = '#7C7C7C';
-
-// Data from CSS
-const applications = [
-    {
-        id: 1,
-        name: 'Петров Петр Петрович',
-        type: 'Производственная практика',
-        details: 'ООО “ТехноСофт” Москва Очно 01.02.2026 - 28.02.2026',
-        status: 'new',
-        updated: '24.01.2026'
-    },
-    {
-        id: 2,
-        name: 'Сидоров Илья Андреевич',
-        type: 'Производственная практика',
-        details: 'ПАО “Сбер” Москва Очно 01.02.2026 - 28.02.2026',
-        status: 'accepted',
-        updated: '20.01.2026'
-    },
-    {
-        id: 3,
-        name: 'Кузнецова Анна Владимировна',
-        type: 'Учебная практика',
-        details: 'ООО “Веб-Студия” Казань Удаленно 10.01.2026 - 10.02.2026',
-        status: 'rejected',
-        updated: '18.01.2026'
-    },
-    {
-        id: 4,
-        name: 'Орлов Денис Игоревич',
-        type: 'Производственная практика',
-        details: 'ООО “Инновации” Новосибирск Очно 01.03.2026 - 31.03.2026',
-        status: 'withdrawn',
-        updated: '15.01.2026'
-    },
-    {
-        id: 5,
-        name: 'Смирнова Елена Дмитриевна',
-        type: 'Преддипломная практика',
-        details: 'ООО “АйТи Лаб” Екатеринбург Гибрид 20.02.2026 - 20.04.2026',
-        status: 'review',
-        updated: '22.01.2026'
-    },
-    {
-        id: 6,
-        name: 'Козлов Максим Николаевич',
-        type: 'Производственная практика',
-        details: 'ООО “ДатаПро” Москва Очно 01.02.2026 - 28.02.2026',
-        status: 'review',
-        updated: '21.01.2026'
-    },
-    {
-        id: 7,
-        name: 'Новикова Ольга Александровна',
-        type: 'Учебная практика',
-        details: 'ООО “Кодекс” Ростов-на-Дону Удаленно 15.01.2026 - 15.02.2026',
-        status: 'review',
-        updated: '19.01.2026'
-    }
-];
 
 const statusConfig = {
     new: { label: 'Новая', color: PRIMARY_BLUE, bgcolor: 'rgba(0, 109, 178, 0.19)', border: '#006DB2' },
@@ -79,6 +21,7 @@ const statusConfig = {
     accepted: { label: 'Принята', color: '#08A600', bgcolor: 'rgba(8, 166, 0, 0.26)', border: '#08A600' },
     rejected: { label: 'Отклонена', color: '#D2060A', bgcolor: 'rgba(210, 6, 10, 0.36)', border: '#D2060A' },
     withdrawn: { label: 'Отозвана', color: TEXT_GRAY, bgcolor: 'rgba(124, 124, 124, 0.27)', border: '#7C7C7C' },
+    changes_requested: { label: 'Требует правок', color: '#FCA818', bgcolor: 'rgba(252, 168, 24, 0.2)', border: '#FCA818' }
 };
 
 const StatCard = ({ count, label, icon, color }) => (
@@ -90,7 +33,9 @@ const StatCard = ({ count, label, icon, color }) => (
         display: 'flex',
         alignItems: 'center',
         gap: 2,
-        height: '100%', // Fill grid item height
+        flex: 1,
+        minWidth: '160px',
+        height: '80px',
         boxSizing: 'border-box'
     }}>
         <Box sx={{
@@ -118,44 +63,39 @@ const StatCard = ({ count, label, icon, color }) => (
 );
 
 const ApplicationCard = ({ app }) => {
-    const status = statusConfig[app.status];
+    const status = statusConfig[app.status] || statusConfig.review;
+    const navigate = useNavigate();
 
     return (
         <Box sx={{
             bgcolor: '#FFFFFF',
-            p: { xs: 2, sm: '20px' },
+            p: '20px',
             display: 'flex',
-            flexDirection: { xs: 'column', sm: 'row' }, // Stack on mobile
+            flexDirection: { xs: 'column', sm: 'row' },
             justifyContent: 'space-between',
-            alignItems: { xs: 'flex-start', sm: 'center' }, // Align center on desktop
+            alignItems: { xs: 'flex-start', sm: 'center' },
             borderBottom: '1px solid #7C7C7C',
             '&:last-child': {
                 borderBottom: 'none'
             },
-            gap: { xs: 2, sm: 0 }
+            height: '85px',
+            boxSizing: 'content-box'
         }}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
                 <Typography sx={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 700, fontSize: '20px', lineHeight: '24px', color: '#000' }}>
-                    {app.name}
+                    {app.studentName}
                 </Typography>
                 <Typography sx={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 400, fontSize: '15px', lineHeight: '18px', color: '#000' }}>
-                    {app.type}
+                    {app.practiceTitle}
                 </Typography>
-                <Box display="flex" alignItems="center" gap={1} flexWrap="wrap">
+                <Box display="flex" alignItems="center" gap={1}>
                     <Typography sx={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 600, fontSize: '11px', lineHeight: '13px', color: TEXT_GRAY }}>
-                        {app.details}
+                        {app.companyName} • {app.city}
                     </Typography>
                 </Box>
             </Box>
 
-            <Box sx={{ 
-                display: 'flex', 
-                flexDirection: { xs: 'row', sm: 'column' }, 
-                justifyContent: 'space-between', 
-                alignItems: { xs: 'center', sm: 'flex-end' }, 
-                width: { xs: '100%', sm: 'auto' },
-                gap: 1
-            }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'flex-end', height: '100%' }}>
                 <Box sx={{
                     bgcolor: status.bgcolor,
                     border: `0.5px solid ${status.border}`,
@@ -173,11 +113,12 @@ const ApplicationCard = ({ app }) => {
                 
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                     <Typography sx={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 600, fontSize: '11px', color: TEXT_GRAY, display: { xs: 'none', sm: 'block' } }}>
-                        Обновлено: {app.updated}
+                        Обновлено: {new Date(app.updatedAt).toLocaleDateString()}
                     </Typography>
 
                     <Button 
                         variant="contained" 
+                        onClick={() => navigate(`/rop/applications/${app.id}`)}
                         sx={{
                             bgcolor: PRIMARY_BLUE,
                             borderRadius: '15px',
@@ -200,6 +141,49 @@ const ApplicationCard = ({ app }) => {
 };
 
 const ROPApplicationsPage = () => {
+    const [applications, setApplications] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    const fetchApplications = async () => {
+        setLoading(true);
+        const token = localStorage.getItem('token');
+        if (!token) return;
+
+        try {
+            const response = await axios.get('/api/applications/', {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            
+            const mappedApps = response.data.map(app => ({
+                id: app.id,
+                studentName: app.user.fullname,
+                practiceTitle: app.practice.title,
+                companyName: app.practice.company.name,
+                city: app.practice.city,
+                status: app.status,
+                updatedAt: app.updated_at
+            }));
+            setApplications(mappedApps);
+        } catch (error) {
+            console.error("Error fetching applications:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchApplications();
+    }, []);
+
+    // Calculate stats
+    const stats = {
+        review: applications.filter(a => a.status === 'review').length,
+        accepted: applications.filter(a => a.status === 'accepted').length,
+        rejected: applications.filter(a => a.status === 'rejected').length,
+        changes_requested: applications.filter(a => a.status === 'changes_requested').length,
+        withdrawn: applications.filter(a => a.status === 'withdrawn').length,
+    };
+
     return (
         <Box sx={{ width: '100%', padding: '40px 0 80px 0' }}>
             <Typography variant="h1" sx={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 700, fontSize: { xs: '28px', md: '32px' }, mb: 1 }}>
@@ -209,29 +193,27 @@ const ROPApplicationsPage = () => {
                 Просматривайте заявки по закрепленным практикам и принимайте решения
             </Typography>
 
-            {/* Stats Row - Responsive Grid */}
+            {/* Stats Row */}
             <Grid container spacing={2} sx={{ mb: 4 }}>
-                <Grid item xs={6} sm={4} md={2}>
-                    <StatCard count={2} label="Новые" icon={<AccessTimeIcon />} color={PRIMARY_BLUE} />
+                {/* Removed "New" stat card */}
+                <Grid item xs={6} sm={4} md={2.4}>
+                    <StatCard count={stats.review} label="На рассмотрении" icon={<AccessTimeIcon />} color={PRIMARY_BLUE} />
                 </Grid>
-                <Grid item xs={6} sm={4} md={2}>
-                    <StatCard count={6} label="На рассмотрении" icon={<AccessTimeIcon />} color={PRIMARY_BLUE} />
+                <Grid item xs={6} sm={4} md={2.4}>
+                    <StatCard count={stats.changes_requested} label="Требуют правок" icon={<ErrorOutlineIcon />} color="#FCA818" />
                 </Grid>
-                <Grid item xs={6} sm={4} md={2}>
-                    <StatCard count={2} label="Требуют правок" icon={<ErrorOutlineIcon />} color="#FCA818" />
+                <Grid item xs={6} sm={4} md={2.4}>
+                    <StatCard count={stats.accepted} label="Приняты" icon={<CheckCircleOutlineIcon />} color="#01CF0F" />
                 </Grid>
-                <Grid item xs={6} sm={4} md={2}>
-                    <StatCard count={3} label="Приняты" icon={<CheckCircleOutlineIcon />} color="#01CF0F" />
+                <Grid item xs={6} sm={4} md={2.4}>
+                    <StatCard count={stats.rejected} label="Отклонены" icon={<HighlightOffIcon />} color="#D2060A" />
                 </Grid>
-                <Grid item xs={6} sm={4} md={2}>
-                    <StatCard count={1} label="Отклонены" icon={<HighlightOffIcon />} color="#D2060A" />
-                </Grid>
-                <Grid item xs={6} sm={4} md={2}>
-                    <StatCard count={1} label="Отозваны" icon={<ReplayIcon />} color={TEXT_GRAY} />
+                <Grid item xs={6} sm={4} md={2.4}>
+                    <StatCard count={stats.withdrawn} label="Отозваны" icon={<ReplayIcon />} color={TEXT_GRAY} />
                 </Grid>
             </Grid>
 
-            {/* Filters Row - Responsive Flex */}
+            {/* Filters Row */}
             <Box display="flex" flexDirection={{ xs: 'column', md: 'row' }} alignItems={{ xs: 'flex-start', md: 'center' }} justifyContent="space-between" mb={3} gap={2}>
                 <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" useFlexGap>
                     <Button variant="contained" sx={{ 
@@ -246,7 +228,7 @@ const ROPApplicationsPage = () => {
                     }}>
                         Все
                     </Button>
-                    {['Новые', 'На рассмотрении', 'Требуют правок', 'Приняты', 'Отклонены', 'Отозваны'].map(label => (
+                    {['На рассмотрении', 'Требуют правок', 'Приняты', 'Отклонены', 'Отозваны'].map(label => (
                         <Button key={label} sx={{ 
                             color: TEXT_GRAY, 
                             textTransform: 'none', 
@@ -326,12 +308,16 @@ const ROPApplicationsPage = () => {
                 bgcolor: '#FFFFFF',
                 borderRadius: '40px',
                 boxShadow: '0px 2px 2px rgba(0, 0, 0, 0.25)',
-                p: { xs: 2, md: '20px' },
+                p: '20px', 
                 minHeight: '600px'
             }}>
-                {applications.map(app => (
-                    <ApplicationCard key={app.id} app={app} />
-                ))}
+                {applications.length === 0 ? (
+                    <Typography sx={{ textAlign: 'center', color: TEXT_GRAY, mt: 4 }}>Заявок пока нет</Typography>
+                ) : (
+                    applications.map(app => (
+                        <ApplicationCard key={app.id} app={app} />
+                    ))
+                )}
             </Box>
         </Box>
     );

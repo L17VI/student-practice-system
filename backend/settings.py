@@ -6,8 +6,8 @@ class Settings(BaseSettings):
     # Database
     BASE_DIR: Path = Path(__file__).parent
     INSTANCE_DIR: Path = BASE_DIR / "instance"
-    # Changed DB name to force recreation with new schema (v8)
-    DB_PATH: Path = INSTANCE_DIR / "data_v8.db"
+    # Changed DB name to force recreation with new schema (v9)
+    DB_PATH: Path = INSTANCE_DIR / "data_v9.db"
     DATABASE_URL: str = f"sqlite:///{DB_PATH}"
 
     # JWT

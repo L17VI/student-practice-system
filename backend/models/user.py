@@ -17,3 +17,4 @@ class UserModel(Base):
     student = relationship("StudentModel", back_populates="user")
     supervisor = relationship("PracticeSupervisorModel", back_populates="user")
     favorites = relationship("FavoriteModel", back_populates="user")
+    applications = relationship("ApplicationModel", back_populates="user")

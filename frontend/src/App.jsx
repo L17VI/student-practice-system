@@ -8,8 +8,10 @@ import Home from './pages/Home';
 import PracticePage from './pages/PracticePage';
 import AccountPage from './pages/AccountPage';
 import ApplicationsPage from './pages/ApplicationsPage';
+import ApplicationFormPage from './pages/ApplicationFormPage';
 import CompanyPage from './pages/CompanyPage';
 import ROPApplicationsPage from './pages/ROPApplicationsPage';
+import ROPApplicationDetailsPage from './pages/ROPApplicationDetailsPage';
 import userService from './services/userService';
 
 const VacanciesPage = () => <Typography variant="h4" component="h1">Вакансии</Typography>;
@@ -99,18 +101,19 @@ function App() {
 
             <Container 
                 component="main" 
-                // disableGutters // Убираем стандартные отступы MUI
+                disableGutters // Убираем стандартные отступы MUI
                 sx={{
                     maxWidth: '1200px', // Фиксированная ширина для десктопа
                     flexGrow: 1,
                     py: 4,
-                    px: { xs: 2, md: 0 } // Адаптивные горизонтальные отступы
+                    // px: { xs: 2, md: 0 } // Горизонтальные отступы будут на страницах
                 }}
             >
                 <Routes>
                     {/* Public & Student Routes */}
                     <Route path="/" element={<Home isAdmin={isAdmin} />} />
                     <Route path="/practice/:id" element={<PracticePage />} />
+                    <Route path="/practice/:id/apply" element={isAuthenticated ? <ApplicationFormPage /> : <Login onLogin={handleLogin} />} />
                     <Route path="/company/:name" element={<CompanyPage />} />
                     
                     {/* Protected Routes */}
@@ -120,6 +123,7 @@ function App() {
                     
                     {/* ROP / Admin Routes */}
                     <Route path="/rop/applications" element={isAuthenticated && (userRole === 'rop' || userRole === 'admin') ? <ROPApplicationsPage /> : <Login onLogin={handleLogin} />} />
+                    <Route path="/rop/applications/:id" element={isAuthenticated && (userRole === 'rop' || userRole === 'admin') ? <ROPApplicationDetailsPage /> : <Login onLogin={handleLogin} />} />
                     <Route path="/rop/students" element={isAuthenticated && (userRole === 'rop' || userRole === 'admin') ? <StudentsPage /> : <Login onLogin={handleLogin} />} />
 
                     <Route path="/vacancies" element={<VacanciesPage />} />

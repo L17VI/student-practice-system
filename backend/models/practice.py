@@ -30,3 +30,4 @@ class PracticeModel(Base):
     supervisor = relationship("PracticeSupervisorModel", back_populates="practice")
     favorite = relationship("FavoriteModel", back_populates="practice")
     group_practice = relationship("GroupPracticeModel", back_populates="practice")
+    applications = relationship("ApplicationModel", back_populates="practice")
