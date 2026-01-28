@@ -1,32 +1,70 @@
-// userService.js
+import axios from 'axios';
 
-// Example implementation of userService
+const login = async (email, password) => {
+    const formData = new FormData();
+    formData.append('username', email);
+    formData.append('password', password);
 
-const getUser = async (id) => {
-    // Replace with actual API call
-    const response = await fetch(`/api/user/${id}`);
-    if (!response.ok) {
-        throw new Error('Failed to fetch user');
+    const response = await axios.post('/api/auth/login', formData, {
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+    });
+
+    if (response.data.access_token) {
+        localStorage.setItem('token', response.data.access_token);
     }
-    return await response.json();
+    return response.data;
 };
 
-const createUser = async (userData) => {
-    // Replace with actual API call
-    const response = await fetch(`/api/user`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(userData),
+const register = async (fullname, email, password, role) => {
+    const response = await axios.post('/api/user/', {
+        fullname,
+        email,
+        password,
+        role
     });
-    if (!response.ok) {
-        throw new Error('Failed to create user');
+    return response.data;
+};
+
+const getMe = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) return null;
+    
+    try {
+        const response = await axios.get('/api/user/me', {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching current user:", error);
+        return null;
     }
-    return await response.json();
+};
+
+const updateMe = async (data) => {
+    const token = localStorage.getItem('token');
+    if (!token) return null;
+
+    try {
+        const response = await axios.put('/api/user/me', data, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Error updating user:", error);
+        throw error;
+    }
+};
+
+const logout = () => {
+    localStorage.removeItem('token');
 };
 
 export default {
-    getUser,
-    createUser,
+    login,
+    register,
+    getMe,
+    updateMe,
+    logout
 };

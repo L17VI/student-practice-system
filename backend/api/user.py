@@ -1,5 +1,5 @@
 from models.user import UserModel
-from schemas.user import UserAddSchema, UserSchema
+from schemas.user import UserAddSchema, UserSchema, UserUpdateSchema
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from database import get_db
@@ -13,6 +13,20 @@ router = APIRouter()
 async def read_users_me(current_user: UserModel = Depends(get_current_user)):
     return current_user
 
+@router.put("/me", response_model=UserSchema)
+async def update_user_me(data: UserUpdateSchema, current_user: UserModel = Depends(get_current_user), session: Session = Depends(get_db)):
+    if data.phone is not None:
+        current_user.phone = data.phone
+    if data.birth_date is not None:
+        current_user.birth_date = data.birth_date
+    if data.fullname is not None:
+        current_user.fullname = data.fullname
+    if data.image is not None:
+        current_user.image = data.image
+    
+    session.commit()
+    session.refresh(current_user)
+    return current_user
 
 @router.get("/")
 async def get_users(session: Session = Depends(get_db)):
@@ -43,6 +57,8 @@ async def add_user(data: UserAddSchema, session: Session = Depends(get_db)):
         image=data.image,
         password=hashed_password,
         role=data.role.value,
+        phone=data.phone,
+        birth_date=data.birth_date
     )
     session.add(new_user)
     session.commit()

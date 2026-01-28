@@ -4,7 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="65bc21dc-e012-4950-854f-aafa51cddd42" name="Changes" comment="///" />
+    <list default="true" id="65bc21dc-e012-4950-854f-aafa51cddd42" name="Changes" comment="много всего....&#10;пупупу">
+      <change afterPath="$PROJECT_DIR$/backend/models/application.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/pages/ApplicationFormPage.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/pages/ROPApplicationDetailsPage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/api/applications.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/api/applications.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/models/practice.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/models/practice.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/models/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/models/user.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/schemas/application.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/schemas/application.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/Header.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Header.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/AccountPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/AccountPage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/PracticePage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/PracticePage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/ROPApplicationsPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/ROPApplicationsPage.jsx" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -13,7 +28,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="page" />
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -28,7 +43,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/L17VI/student-practice-system.git&quot;,
-    &quot;accountId&quot;: &quot;c981baac-9ac7-4ef9-a727-0da72b792e27&quot;
+    &quot;accountId&quot;: &quot;82441ee9-2d06-48ed-824f-30c1cda25176&quot;
   }
 }</component>
   <component name="ProblemsViewState">
@@ -52,7 +67,7 @@
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultAutoModeForALLUsers.v1&quot;: &quot;true&quot;,
     &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;frontPracticListPage&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
@@ -60,9 +75,14 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;,
     &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;sqlite&quot;
+    ]
   }
 }</component>
   <component name="ReactDesignerToolWindowState">
@@ -90,7 +110,6 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="SDK_NAME" value="Python 3.14" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/backend" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -121,8 +140,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-3aa1da707db6-JavaScript-PY-252.27397.106" />
-        <option value="bundled-python-sdk-4e2b1448bda8-9a97661f3031-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-252.27397.106" />
+        <option value="bundled-js-predefined-d6986cc7102b-3aa1da707db6-JavaScript-WS-252.27397.92" />
       </set>
     </attachedChunks>
   </component>
@@ -142,6 +160,12 @@
       <workItem from="1764770153681" duration="2568000" />
       <workItem from="1765848848906" duration="1908000" />
       <workItem from="1765850767486" duration="4895000" />
+      <workItem from="1768101983619" duration="18625000" />
+      <workItem from="1768386482068" duration="2238000" />
+      <workItem from="1768449578528" duration="6832000" />
+      <workItem from="1768553752356" duration="2175000" />
+      <workItem from="1768981220083" duration="6260000" />
+      <workItem from="1769512270522" duration="16059000" />
     </task>
     <task id="LOCAL-00001" summary="короче фронт теперь соеденен с беком">
       <option name="closed" value="true" />
@@ -167,7 +191,23 @@
       <option name="project" value="LOCAL" />
       <updated>1765862401936</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="каталог практик, лк с подключенным беком">
+      <option name="closed" value="true" />
+      <created>1768134634716</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1768134634716</updated>
+    </task>
+    <task id="LOCAL-00005" summary="много всего....&#10;пупупу">
+      <option name="closed" value="true" />
+      <created>1769522869007</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1769522869007</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -176,7 +216,9 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="короче фронт теперь соеденен с беком" />
     <MESSAGE value="///" />
-    <option name="LAST_COMMIT_MESSAGE" value="///" />
+    <MESSAGE value="каталог практик, лк с подключенным беком" />
+    <MESSAGE value="много всего....&#10;пупупу" />
+    <option name="LAST_COMMIT_MESSAGE" value="много всего....&#10;пупупу" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/student_practice_system$main.coverage" NAME="main Coverage Results" MODIFIED="1765850624201" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend" />
