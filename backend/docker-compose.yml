@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   web:
@@ -7,7 +7,10 @@ services:
       - "8000:8000"
     volumes:
       - .:/app
+      - ./instance:/app/instance
     environment:
+      - DATABASE_URL=sqlite:////app/instance/data.db
+      - PYTHONDONTWRITEBYTECODE=1
       - PYTHONUNBUFFERED=1
     command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 

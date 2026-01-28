@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from api import user, auth, practice, applications, rop, supervisors, favorite
+from api import user, auth, practice, applications, rop, supervisor, favorite
 from settings import settings
 from config import init_db
 from sqlalchemy import inspect
@@ -24,12 +24,12 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
-app.include_router(auth.router, prefix="/api/auth", tags=["auth"])
+app.include_router(auth.router, prefix="/api/auth", tags=["Аутентификация"])
 app.include_router(user.router, prefix="/api/user", tags=["Пользователи"])
 app.include_router(practice.router, prefix="/api/practice", tags=["Практики"])
-app.include_router(applications.router, prefix="/api/applications", tags=["applications"])
-app.include_router(rop.router, prefix="/api/rop", tags=["rop"])
-app.include_router(supervisors.router, prefix="/api/supervisors", tags=["supervisors"])
+app.include_router(applications.router, prefix="/api/applications", tags=["Заявки"])
+app.include_router(rop.router, prefix="/api/rop", tags=["РОП"])
+app.include_router(supervisor.router, prefix="/api/supervisor", tags=["Руководители"])
 app.include_router(favorite.router, prefix="/api/favorite", tags=["Избранное"])
 @app.get("/")
 async def root():
