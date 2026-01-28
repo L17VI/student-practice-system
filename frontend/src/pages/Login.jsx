@@ -1,66 +1,130 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
+import userService from '../services/userService';
+import {
+    Container,
+    Box,
+    Typography,
+    TextField,
+    Button,
+    Paper,
+    Link,
+    Alert,
+} from '@mui/material';
 
-const Login = () => {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-  });
+const Login = ({ onLogin }) => {
+    const [formData, setFormData] = useState({
+        email: '',
+        password: '',
+    });
+    const [error, setError] = useState('');
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(formData);
-  };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError('');
+        if (!formData.email || !formData.password) {
+            setError('Пожалуйста, заполните все поля.');
+            return;
+        }
+        try {
+            await userService.login(formData.email, formData.password);
+            onLogin();
+        } catch (err) {
+            setError('Не удалось войти. Проверьте правильность email и пароля.');
+            console.error('Failed to login', err);
+        }
+    };
 
-  return (
-    <div className="flex justify-center items-center h-screen">
-      <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
-            Email
-          </label>
-          <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="email"
-            type="email"
-            placeholder="Email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="mb-6">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
-            Password
-          </label>
-          <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-            id="password"
-            type="password"
-            placeholder="******************"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="flex items-center justify-between">
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            type="submit"
-          >
-            Sign In
-          </button>
-          <Link to="/register" className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800">
-            Нет аккаунта? Зарегистрироваться
-          </Link>
-        </div>
-      </form>
-    </div>
-  );
+    return (
+        <Container component="main" maxWidth="xs">
+            <Paper
+                elevation={0}
+                sx={{
+                    marginTop: 8,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    padding: '40px',
+                    borderRadius: '40px',
+                    boxShadow: '0px 10px 10px rgba(0, 0, 0, 0.15)',
+                    backgroundColor: '#FFFFFF'
+                }}
+            >
+                <Typography component="h1" variant="h5" sx={{ fontWeight: '700', fontFamily: "'Montserrat', sans-serif", mb: 2 }}>
+                    Вход в аккаунт
+                </Typography>
+                <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, width: '100%' }}>
+                    {error && (
+                        <Alert severity="error" sx={{ width: '100%', mb: 2, borderRadius: '20px' }}>
+                            {error}
+                        </Alert>
+                    )}
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="email"
+                        label="Электронная почта"
+                        name="email"
+                        autoComplete="email"
+                        autoFocus
+                        value={formData.email}
+                        onChange={handleChange}
+                        sx={{
+                            '& .MuiInputLabel-root': {
+                                fontFamily: "'Montserrat', sans-serif",
+                            }
+                        }}
+                    />
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="password"
+                        label="Пароль"
+                        type="password"
+                        id="password"
+                        autoComplete="current-password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        sx={{
+                            '& .MuiInputLabel-root': {
+                                fontFamily: "'Montserrat', sans-serif",
+                            }
+                        }}
+                    />
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        sx={{
+                            mt: 3,
+                            mb: 2,
+                            py: 1.5,
+                            backgroundColor: '#006DB2',
+                            '&:hover': { backgroundColor: '#005a9e' },
+                            borderRadius: '30px',
+                            fontWeight: '700',
+                            fontFamily: "'Montserrat', sans-serif",
+                            textTransform: 'none',
+                            fontSize: '16px'
+                        }}
+                    >
+                        Войти
+                    </Button>
+                    <Box textAlign="center">
+                        <Link component={RouterLink} to="/register" variant="body2" sx={{ fontFamily: "'Montserrat', sans-serif", color: '#006DB2', textDecoration: 'none', fontWeight: 500 }}>
+                            {"Нет аккаунта? Зарегистрироваться"}
+                        </Link>
+                    </Box>
+                </Box>
+            </Paper>
+        </Container>
+    );
 };
 
 export default Login;

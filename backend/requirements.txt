@@ -2,12 +2,10 @@ fastapi
 uvicorn[standard]
 sqlmodel
 sqlalchemy
-passlib[bcrypt]
-python-dotenv
 pydantic-settings
 alembic
-pytest
-httpx
-email-validator
-dotenv
 pydantic[email]
+python-jose[cryptography]
+passlib
+bcrypt==3.2.0
+python-multipart
