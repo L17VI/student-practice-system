@@ -1,5 +1,5 @@
 import React from 'react'
-import ApplicationForm from './ApplicationForm'
+import ApplicationForm from '../applications/ApplicationForm'
 
 export default function PracticeCard({ practice }) {
   return (
@@ -11,4 +11,3 @@ export default function PracticeCard({ practice }) {
     </div>
   )
 }
-

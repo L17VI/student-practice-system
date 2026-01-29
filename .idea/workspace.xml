@@ -5,19 +5,41 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="65bc21dc-e012-4950-854f-aafa51cddd42" name="Changes" comment="много всего....&#10;пупупу">
-      <change afterPath="$PROJECT_DIR$/backend/models/application.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/pages/ApplicationFormPage.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/pages/ROPApplicationDetailsPage.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/applications/ApplicationCard.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/applications/ApplicationInfo.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/applications/ApplicationsList.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/applications/Comments.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/applications/Documents.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/applications/NextStep.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/applications/StatusHistory.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/common/DocumentViewer.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/companies/.gitkeep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/diary/DiaryEntry.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/layout/.gitkeep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/layout/NotificationBell.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/practices/.gitkeep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/pages/ApplicationDetailPage.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api/applications.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/api/applications.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/models/practice.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/models/practice.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/models/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/models/user.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/schemas/application.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/schemas/application.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Header.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Header.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/ApplicationForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/applications/ApplicationForm.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/ApplicationList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/applications/ApplicationList.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/Card.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/common/Card.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/CompanyCard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/companies/CompanyCard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/DiaryEntry.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/applications/.gitkeep" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/DocumentViewer.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/auth/.gitkeep" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/Header.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/layout/Header.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/LoginForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/auth/LoginForm.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/NotificationBell.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/common/.gitkeep" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/PartnersCarousel.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/companies/PartnersCarousel.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/PracticeCard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/practices/PracticeCard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/PracticeList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/practices/PracticeList.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/Skeletons.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/common/Skeletons.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/pages/AccountPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/AccountPage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/ApplicationsPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/ApplicationsPage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/CompanyPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/CompanyPage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Home.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Home.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/pages/PracticePage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/PracticePage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/ROPApplicationDetailsPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/ROPApplicationDetailsPage.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/pages/ROPApplicationsPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/ROPApplicationsPage.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -58,33 +80,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;Python.main.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultAutoModeForALLUsers.v1&quot;: &quot;true&quot;,
-    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;frontPracticListPage&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;,
-    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Python.main.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultAutoModeForALLUsers.v1": "true",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "frontend",
+    "ignore.virus.scanning.warn.message": "true",
+    "junie.onboarding.icon.badge.shown": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
+    "to.speed.mode.migration.done": "true",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;sqlite&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "sqlite"
     ]
   }
-}</component>
+}]]></component>
   <component name="ReactDesignerToolWindowState">
     <option name="myId2Visible">
       <map>

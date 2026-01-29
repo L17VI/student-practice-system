@@ -4,9 +4,9 @@ import axios from 'axios';
 import AddIcon from '@mui/icons-material/Add';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import CheckIcon from '@mui/icons-material/Check';
-import Card from '../components/Card';
-import CompanyCard from '../components/CompanyCard';
-import { CardSkeleton, CompanyCardSkeleton } from '../components/Skeletons';
+import Card from '../components/common/Card';
+import CompanyCard from '../components/companies/CompanyCard';
+import { CardSkeleton, CompanyCardSkeleton } from '../components/common/Skeletons';
 
 // --- Constants ---
 const PRIMARY_BLUE = '#006DB2';

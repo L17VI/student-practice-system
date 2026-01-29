@@ -5,8 +5,8 @@ import axios from 'axios';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import BusinessIcon from '@mui/icons-material/Business';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import Card from '../components/Card';
-import { CardSkeleton } from '../components/Skeletons';
+import Card from '../components/common/Card';
+import { CardSkeleton } from '../components/common/Skeletons';
 
 const PRIMARY_BLUE = '#006DB2';
 
