@@ -7,7 +7,7 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { PracticePageSkeleton } from '../components/Skeletons';
+import { PracticePageSkeleton } from '../components/common/Skeletons';
 
 const PRIMARY_BLUE = '#006DB2';
 

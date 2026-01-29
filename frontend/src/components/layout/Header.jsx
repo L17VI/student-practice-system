@@ -8,11 +8,9 @@ import {
 } from '@mui/material';
 import { Link, useLocation } from 'react-router-dom';
 
-// --- Constants ---
 const PRIMARY_BLUE = '#006DB2';
 const TEXT_GREY = '#A3A8C9';
 
-// --- Logo Component ---
 const Logo = ({ theme = 'light', role }) => {
     const isDark = theme === 'dark';
     
@@ -20,7 +18,6 @@ const Logo = ({ theme = 'light', role }) => {
     const iconColor = isDark ? PRIMARY_BLUE : '#FFFFFF';
     const textColor = isDark ? '#FFFFFF' : PRIMARY_BLUE;
 
-    // Determine home link based on role
     const homeLink = role === 'rop' ? '/rop/applications' : '/';
 
     return (
@@ -77,19 +74,16 @@ const Logo = ({ theme = 'light', role }) => {
     );
 };
 
-// --- Header Component ---
 export function Header({ isAuthenticated, role }) {
     const location = useLocation();
     const isActive = (path) => location.pathname === path;
     const isAccountActive = ['/account', '/favorites'].includes(location.pathname);
 
-    // Ссылки для студента (по умолчанию)
     let navLinks = [
         { label: 'Каталог', path: '/' },
         { label: 'Мои заявки', path: '/applications' },
     ];
 
-    // Ссылки для руководителя (ROP)
     if (role === 'rop') {
         navLinks = [
             { label: 'Входящие заявки', path: '/rop/applications' },
@@ -97,7 +91,6 @@ export function Header({ isAuthenticated, role }) {
         ];
     }
     
-    // Ссылки для админа (видит всё)
     if (role === 'admin') {
         navLinks = [
             { label: 'Каталог', path: '/' },
@@ -185,7 +178,6 @@ export function Header({ isAuthenticated, role }) {
     );
 }
 
-// --- Footer Component ---
 export function Footer({ role }) {
     const isManager = role === 'rop' || role === 'admin';
 
@@ -205,17 +197,13 @@ export function Footer({ role }) {
                     justifyContent: 'space-between',
                 }}
             >
-                {/* 1. Top Floor */}
                 <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: 'flex-start', width: '100%', mb: '30px', gap: { xs: 4, md: 0 } }}>
                     
-                    {/* Column 1: Logo */}
                     <Box sx={{ display: 'flex', flexDirection: 'column', maxWidth: '150px' }}>
                         <Logo theme="dark" />
                     </Box>
 
-                    {/* Dynamic Columns based on Role */}
                     {isManager ? (
-                        // MANAGER FOOTER COLUMNS
                         <>
                             <Box sx={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                                 <Typography sx={{ fontFamily: "'Montserrat', sans-serif", fontSize: '16px', fontWeight: 400, mb: '8px', color: '#FFFFFF' }}>
@@ -251,7 +239,6 @@ export function Footer({ role }) {
                             </Box>
                         </>
                     ) : (
-                        // STUDENT FOOTER COLUMNS
                         <>
                             <Box sx={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                                 <Typography sx={{ fontFamily: "'Montserrat', sans-serif", fontSize: '16px', fontWeight: 400, mb: '8px', color: '#FFFFFF' }}>
@@ -287,7 +274,6 @@ export function Footer({ role }) {
                     )}
                 </Box>
 
-                {/* 2. Middle Floor: Divider */}
                 <Box sx={{
                     width: '100%',
                     height: '1px',
@@ -295,7 +281,6 @@ export function Footer({ role }) {
                     marginBottom: '20px',
                 }} />
 
-                {/* 3. Bottom Floor: Copyright */}
                 <Typography sx={{ fontFamily: "'Kreon', serif", fontSize: '10px', color: '#5D6BC4' }}>
                     profprac.ru
                 </Typography>

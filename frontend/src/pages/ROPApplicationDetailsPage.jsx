@@ -6,18 +6,53 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import DownloadIcon from '@mui/icons-material/Download';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import ReplayIcon from '@mui/icons-material/Replay';
 
 const PRIMARY_BLUE = '#006DB2';
 const TEXT_GRAY = '#7C7C7C';
 
-const statusConfig = {
-    draft: { label: 'Черновик', color: '#7C7C7C', bgcolor: '#F0F0F0', border: '#7C7C7C' },
-    new: { label: 'Новая', color: PRIMARY_BLUE, bgcolor: 'rgba(0, 109, 178, 0.19)', border: '#006DB2' },
-    review: { label: 'На рассмотрении', color: PRIMARY_BLUE, bgcolor: 'rgba(0, 109, 178, 0.35)', border: '#006DB2' },
-    accepted: { label: 'Принята', color: '#08A600', bgcolor: 'rgba(8, 166, 0, 0.26)', border: '#08A600' },
-    rejected: { label: 'Отклонена', color: '#D2060A', bgcolor: 'rgba(210, 6, 10, 0.36)', border: '#D2060A' },
-    withdrawn: { label: 'Отозвана', color: TEXT_GRAY, bgcolor: 'rgba(124, 124, 124, 0.27)', border: '#7C7C7C' },
-    changes_requested: { label: 'Требует правок', color: '#FCA818', bgcolor: 'rgba(252, 168, 24, 0.2)', border: '#FCA818' }
+const statusLabels = {
+    new: 'Новая',
+    review: 'На рассмотрении',
+    accepted: 'Принята',
+    rejected: 'Отклонена',
+    withdrawn: 'Отозвана',
+    changes_requested: 'Требует правок'
+};
+
+const StatusBadge = ({ status }) => {
+    const statusMap = {
+        review: { color: 'info', icon: <AccessTimeIcon sx={{ fontSize: 14 }} /> },
+        changes_requested: { color: 'warning', icon: <ErrorOutlineIcon sx={{ fontSize: 14 }} /> },
+        accepted: { color: 'success', icon: <CheckCircleOutlineIcon sx={{ fontSize: 14 }} /> },
+        rejected: { color: 'error', icon: <HighlightOffIcon sx={{ fontSize: 14 }} /> },
+        withdrawn: { color: 'default', icon: <ReplayIcon sx={{ fontSize: 14 }} /> },
+        new: { color: 'primary', icon: <AccessTimeIcon sx={{ fontSize: 14 }} /> },
+    };
+
+    const { color, icon } = statusMap[status] || { color: 'default', icon: null };
+    const label = statusLabels[status] || 'Неизвестно';
+
+    return (
+        <Chip
+            label={label}
+            icon={icon}
+            color={color}
+            size="small"
+            sx={{
+                fontWeight: 'bold',
+                textTransform: 'uppercase',
+                fontSize: '10px',
+                height: '24px',
+                borderRadius: '12px',
+                '& .MuiChip-label': { paddingLeft: '6px', paddingRight: '6px' },
+                '& .MuiChip-icon': { fontSize: 14, marginLeft: '6px' },
+            }}
+        />
+    );
 };
 
 const ROPApplicationDetailsPage = () => {
@@ -69,7 +104,6 @@ const ROPApplicationDetailsPage = () => {
         return <Typography sx={{ p: 4, textAlign: 'center' }}>Заявка не найдена</Typography>;
     }
 
-    const status = statusConfig[application.status] || statusConfig.review;
     const practice = application.practice;
     const user = application.user;
     const company = practice.company;
@@ -132,17 +166,7 @@ const ROPApplicationDetailsPage = () => {
                             </Typography>
                         </Box>
                         
-                        <Box sx={{
-                            bgcolor: status.bgcolor,
-                            border: `1px solid ${status.border}`,
-                            borderRadius: '50px',
-                            px: 2,
-                            py: 0.5
-                        }}>
-                            <Typography sx={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 600, fontSize: '14px', color: status.color }}>
-                                {status.label}
-                            </Typography>
-                        </Box>
+                        <StatusBadge status={application.status} />
                     </Box>
 
                     {/* Student Info Tags (Placeholder data as User model might not have these yet) */}

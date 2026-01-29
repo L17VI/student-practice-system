@@ -4,21 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="65bc21dc-e012-4950-854f-aafa51cddd42" name="Changes" comment="много всего....&#10;пупупу">
-      <change afterPath="$PROJECT_DIR$/backend/models/application.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/pages/ApplicationFormPage.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/pages/ROPApplicationDetailsPage.jsx" afterDir="false" />
+    <list default="true" id="65bc21dc-e012-4950-854f-aafa51cddd42" name="Changes" comment="сонина страница мои заявки, страница заявки от лица студента.&#10;отредачил весь проект, разбил по блокам как было у сони, привёл всё к единому кодстайлу, единому дизайну сделал немного чище.">
+      <change afterPath="$PROJECT_DIR$/backend/temp_delete_apps.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/api/applications.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/api/applications.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/models/practice.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/models/practice.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/models/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/models/user.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/schemas/application.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/schemas/application.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Header.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Header.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/AccountPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/AccountPage.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/PracticePage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/PracticePage.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/ROPApplicationsPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/ROPApplicationsPage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/applications/ApplicationCard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/applications/ApplicationCard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/applications/ApplicationInfo.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/applications/ApplicationInfo.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/applications/ApplicationsList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/applications/ApplicationsList.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/common/Skeletons.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/common/Skeletons.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/ApplicationDetailPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/ApplicationDetailPage.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,33 +53,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;Python.main.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultAutoModeForALLUsers.v1&quot;: &quot;true&quot;,
-    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;frontPracticListPage&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;,
-    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Python.main.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultAutoModeForALLUsers.v1": "true",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "frontend",
+    "ignore.virus.scanning.warn.message": "true",
+    "junie.onboarding.icon.badge.shown": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
+    "to.speed.mode.migration.done": "true",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;sqlite&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "sqlite"
     ]
   }
-}</component>
+}]]></component>
   <component name="ReactDesignerToolWindowState">
     <option name="myId2Visible">
       <map>
@@ -207,7 +202,15 @@
       <option name="project" value="LOCAL" />
       <updated>1769522869007</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="сонина страница мои заявки, страница заявки от лица студента.&#10;отредачил весь проект, разбил по блокам как было у сони, привёл всё к единому кодстайлу, единому дизайну сделал немного чище.">
+      <option name="closed" value="true" />
+      <created>1769699728314</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1769699728314</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -218,7 +221,8 @@
     <MESSAGE value="///" />
     <MESSAGE value="каталог практик, лк с подключенным беком" />
     <MESSAGE value="много всего....&#10;пупупу" />
-    <option name="LAST_COMMIT_MESSAGE" value="много всего....&#10;пупупу" />
+    <MESSAGE value="сонина страница мои заявки, страница заявки от лица студента.&#10;отредачил весь проект, разбил по блокам как было у сони, привёл всё к единому кодстайлу, единому дизайну сделал немного чище." />
+    <option name="LAST_COMMIT_MESSAGE" value="сонина страница мои заявки, страница заявки от лица студента.&#10;отредачил весь проект, разбил по блокам как было у сони, привёл всё к единому кодстайлу, единому дизайну сделал немного чище." />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/student_practice_system$main.coverage" NAME="main Coverage Results" MODIFIED="1765850624201" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend" />

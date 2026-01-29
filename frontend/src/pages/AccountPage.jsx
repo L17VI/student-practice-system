@@ -3,7 +3,7 @@ import { Box, Typography, Button, IconButton } from '@mui/material';
 import userService from '../services/userService';
 import { useNavigate, useLocation } from 'react-router-dom';
 import CheckIcon from '@mui/icons-material/Check';
-import Card from '../components/Card';
+import Card from '../components/common/Card';
 import axios from 'axios';
 
 // --- Icons ---

@@ -8,20 +8,51 @@ import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import ReplayIcon from '@mui/icons-material/Replay';
-import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const PRIMARY_BLUE = '#006DB2';
 const TEXT_GRAY = '#7C7C7C';
 
-const statusConfig = {
-    new: { label: 'Новая', color: PRIMARY_BLUE, bgcolor: 'rgba(0, 109, 178, 0.19)', border: '#006DB2' },
-    review: { label: 'На рассмотрении', color: PRIMARY_BLUE, bgcolor: 'rgba(0, 109, 178, 0.35)', border: '#006DB2' },
-    accepted: { label: 'Принята', color: '#08A600', bgcolor: 'rgba(8, 166, 0, 0.26)', border: '#08A600' },
-    rejected: { label: 'Отклонена', color: '#D2060A', bgcolor: 'rgba(210, 6, 10, 0.36)', border: '#D2060A' },
-    withdrawn: { label: 'Отозвана', color: TEXT_GRAY, bgcolor: 'rgba(124, 124, 124, 0.27)', border: '#7C7C7C' },
-    changes_requested: { label: 'Требует правок', color: '#FCA818', bgcolor: 'rgba(252, 168, 24, 0.2)', border: '#FCA818' }
+const statusLabels = {
+    new: 'Новая',
+    review: 'На рассмотрении',
+    accepted: 'Принята',
+    rejected: 'Отклонена',
+    withdrawn: 'Отозвана',
+    changes_requested: 'Требует правок'
+};
+
+const StatusBadge = ({ status }) => {
+    const statusMap = {
+        review: { color: 'info', icon: <AccessTimeIcon sx={{ fontSize: 14 }} /> },
+        changes_requested: { color: 'warning', icon: <ErrorOutlineIcon sx={{ fontSize: 14 }} /> },
+        accepted: { color: 'success', icon: <CheckCircleOutlineIcon sx={{ fontSize: 14 }} /> },
+        rejected: { color: 'error', icon: <HighlightOffIcon sx={{ fontSize: 14 }} /> },
+        withdrawn: { color: 'default', icon: <ReplayIcon sx={{ fontSize: 14 }} /> },
+        new: { color: 'primary', icon: <AccessTimeIcon sx={{ fontSize: 14 }} /> },
+    };
+
+    const { color, icon } = statusMap[status] || { color: 'default', icon: null };
+    const label = statusLabels[status] || 'Неизвестно';
+
+    return (
+        <Chip
+            label={label}
+            icon={icon}
+            color={color}
+            size="small"
+            sx={{
+                fontWeight: 'bold',
+                textTransform: 'uppercase',
+                fontSize: '10px',
+                height: '24px',
+                borderRadius: '12px',
+                '& .MuiChip-label': { paddingLeft: '6px', paddingRight: '6px' },
+                '& .MuiChip-icon': { fontSize: 14, marginLeft: '6px' },
+            }}
+        />
+    );
 };
 
 const StatCard = ({ count, label, icon, color }) => (
@@ -63,7 +94,6 @@ const StatCard = ({ count, label, icon, color }) => (
 );
 
 const ApplicationCard = ({ app }) => {
-    const status = statusConfig[app.status] || statusConfig.review;
     const navigate = useNavigate();
 
     return (
@@ -74,7 +104,7 @@ const ApplicationCard = ({ app }) => {
             flexDirection: { xs: 'column', sm: 'row' },
             justifyContent: 'space-between',
             alignItems: { xs: 'flex-start', sm: 'center' },
-            borderBottom: '1px solid #7C7C7C',
+            borderBottom: '1px solid #E0E0E0',
             '&:last-child': {
                 borderBottom: 'none'
             },
@@ -96,20 +126,7 @@ const ApplicationCard = ({ app }) => {
             </Box>
 
             <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'flex-end', height: '100%' }}>
-                <Box sx={{
-                    bgcolor: status.bgcolor,
-                    border: `0.5px solid ${status.border}`,
-                    borderRadius: '15px',
-                    px: 1.5,
-                    height: '27px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                }}>
-                    <Typography sx={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 600, fontSize: '13px', color: status.color }}>
-                        {status.label}
-                    </Typography>
-                </Box>
+                <StatusBadge status={app.status} />
                 
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                     <Typography sx={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 600, fontSize: '11px', color: TEXT_GRAY, display: { xs: 'none', sm: 'block' } }}>
@@ -195,7 +212,6 @@ const ROPApplicationsPage = () => {
 
             {/* Stats Row */}
             <Grid container spacing={2} sx={{ mb: 4 }}>
-                {/* Removed "New" stat card */}
                 <Grid item xs={6} sm={4} md={2.4}>
                     <StatCard count={stats.review} label="На рассмотрении" icon={<AccessTimeIcon />} color={PRIMARY_BLUE} />
                 </Grid>

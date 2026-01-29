@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import api from '../services/api'
+import api from '../../services/api'
 
 export default function ApplicationForm({ practiceId }) {
   const [cover, setCover] = useState('')
@@ -24,4 +24,3 @@ export default function ApplicationForm({ practiceId }) {
     </form>
   )
 }
-

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Header, Footer } from './components/Header';
+import { Header, Footer } from './components/layout/Header';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { Box, Container, Typography, CircularProgress } from '@mui/material';
 import Registration from './pages/Registration';
@@ -8,6 +8,7 @@ import Home from './pages/Home';
 import PracticePage from './pages/PracticePage';
 import AccountPage from './pages/AccountPage';
 import ApplicationsPage from './pages/ApplicationsPage';
+import ApplicationDetailPage from './pages/ApplicationDetailPage';
 import ApplicationFormPage from './pages/ApplicationFormPage';
 import CompanyPage from './pages/CompanyPage';
 import ROPApplicationsPage from './pages/ROPApplicationsPage';
@@ -120,6 +121,7 @@ function App() {
                     <Route path="/account" element={isAuthenticated ? <AccountPage onLogout={handleLogout} /> : <Login onLogin={handleLogin} />} />
                     <Route path="/favorites" element={isAuthenticated ? <AccountPage onLogout={handleLogout} /> : <Login onLogin={handleLogin} />} />
                     <Route path="/applications" element={isAuthenticated ? <ApplicationsPage /> : <Login onLogin={handleLogin} />} />
+                    <Route path="/applications/:id" element={isAuthenticated ? <ApplicationDetailPage /> : <Login onLogin={handleLogin} />} />
                     
                     {/* ROP / Admin Routes */}
                     <Route path="/rop/applications" element={isAuthenticated && (userRole === 'rop' || userRole === 'admin') ? <ROPApplicationsPage /> : <Login onLogin={handleLogin} />} />
