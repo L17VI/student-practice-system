@@ -151,3 +151,56 @@ export const PracticePageSkeleton = () => {
         </Box>
     );
 };
+
+export const ApplicationListSkeleton = () => {
+    return (
+        <Box sx={{ maxWidth: '1200px', margin: '0 auto', padding: '40px 0' }}>
+            <Skeleton variant="text" width={250} height={50} sx={{ mb: 1 }} />
+            <Skeleton variant="text" width={400} height={24} sx={{ mb: 4 }} />
+
+            {/* Stats */}
+            <Grid container spacing={2} sx={{ mb: 4 }}>
+                {[...Array(5)].map((_, i) => (
+                    <Grid item xs={12} sm={6} md={2.4} key={i}>
+                        <Skeleton variant="rounded" height={80} sx={{ borderRadius: '16px' }} />
+                    </Grid>
+                ))}
+            </Grid>
+
+            {/* Filters */}
+            <Box sx={{ mb: 4, display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+                {[...Array(4)].map((_, i) => (
+                    <Skeleton key={i} variant="rounded" width={100} height={36} sx={{ borderRadius: '20px' }} />
+                ))}
+            </Box>
+
+            {/* Search */}
+            <Skeleton variant="rounded" height={56} sx={{ borderRadius: '16px', mb: 4 }} />
+
+            {/* List */}
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                {[...Array(3)].map((_, i) => (
+                    <Skeleton key={i} variant="rounded" height={140} sx={{ borderRadius: '24px' }} />
+                ))}
+            </Box>
+        </Box>
+    );
+};
+
+export const ApplicationDetailSkeleton = () => {
+    return (
+        <Box sx={{ maxWidth: '900px', margin: '0 auto', padding: '40px 0' }}>
+            <Skeleton variant="text" width={150} height={24} sx={{ mb: 3 }} />
+            
+            <Skeleton variant="text" width={200} height={20} sx={{ mb: 1 }} />
+            <Skeleton variant="text" width={300} height={40} sx={{ mb: 1 }} />
+            <Skeleton variant="text" width={400} height={24} sx={{ mb: 4 }} />
+
+            {/* Main Card */}
+            <Skeleton variant="rounded" height={200} sx={{ borderRadius: '16px', mb: 3 }} />
+
+            {/* Info Card */}
+            <Skeleton variant="rounded" height={300} sx={{ borderRadius: '16px', mb: 3 }} />
+        </Box>
+    );
+};

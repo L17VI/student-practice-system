@@ -2,7 +2,11 @@ import React from 'react';
 import { Paper, Typography, Box, Grid } from '@mui/material';
 import DescriptionIcon from '@mui/icons-material/Description';
 
-const ApplicationInfo = () => {
+const ApplicationInfo = ({ application }) => {
+    if (!application) return null;
+
+    const { practice, user } = application;
+
     return (
         <Paper 
             elevation={0} 
@@ -26,7 +30,7 @@ const ApplicationInfo = () => {
                         Период
                     </Typography>
                     <Typography variant="body2" sx={{ fontWeight: 'medium', color: 'text.primary' }}>
-                        Весна 2026
+                        {practice.season}
                     </Typography>
                 </Grid>
                 <Grid item xs={6}>
@@ -34,7 +38,7 @@ const ApplicationInfo = () => {
                         Формат
                     </Typography>
                     <Typography variant="body2" sx={{ fontWeight: 'medium', color: 'text.primary' }}>
-                        Удалённо
+                        {practice.format}
                     </Typography>
                 </Grid>
             </Grid>
@@ -44,7 +48,7 @@ const ApplicationInfo = () => {
                     Контакты
                 </Typography>
                 <Typography variant="body2" sx={{ fontWeight: 'medium', color: 'text.primary' }}>
-                    student@example.com
+                    {user.email}
                 </Typography>
             </Box>
 
@@ -53,7 +57,7 @@ const ApplicationInfo = () => {
                     Комментарий студента
                 </Typography>
                 <Typography variant="body2" sx={{ color: 'text.primary' }}>
-                    Готов начать практику в любое удобное время. Имею опыт работы с Python и Node.js.
+                    {application.cover_letter || 'Комментарий не был оставлен.'}
                 </Typography>
             </Box>
         </Paper>

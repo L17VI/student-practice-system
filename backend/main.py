@@ -26,6 +26,7 @@ async def lifespan(app: FastAPI):
     
     db = SessionLocal()
     try:
+
         # Seed practices
         if "practices" in tables or True:
              if db.query(PracticeModel).count() == 0:

@@ -10,6 +10,17 @@ from typing import List
 
 router = APIRouter()
 
+@router.delete("/all", include_in_schema=False)
+async def delete_all_applications(session: Session = Depends(get_db)):
+    """Temporary endpoint to delete all applications."""
+    try:
+        num_deleted = session.query(ApplicationModel).delete()
+        session.commit()
+        return {"message": f"Successfully deleted {num_deleted} application(s)."}
+    except Exception as e:
+        session.rollback()
+        raise HTTPException(status_code=500, detail=str(e))
+
 @router.post("/", response_model=ApplicationSchema)
 async def create_application(
     data: ApplicationAddSchema,
@@ -28,7 +39,7 @@ async def create_application(
     new_app = ApplicationModel(
         user_id=current_user.id,
         practice_id=data.practice_id,
-        status="draft"
+        status="review"
     )
     session.add(new_app)
     session.commit()
